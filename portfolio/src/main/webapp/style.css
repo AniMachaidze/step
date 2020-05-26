@@ -7,3 +7,33 @@
 #greeting-container {
   margin-top: 20px;
 }
+
+#profile {
+  margin-left: auto;
+  margin-right: auto;
+  width: 650px;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #F3B5A7;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover {
+  background-color: #F28870;
+}
