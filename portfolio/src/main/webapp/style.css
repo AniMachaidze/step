@@ -1,15 +1,24 @@
-body{
+body {
     margin: auto;
     max-width: 1250px;
     font-family: Impact, Charcoal, sans-serif;
-    font-size: 20px;
+    font-size: 18px;
+    margin-bottom: 70px;
+
 }
 
 .container {
     width: 100%;
+    height: 100%;
+    padding-bottom: 0px;
+    padding-top: 20px;
     padding: 30px;
     max-width: 1200px;
     margin: 0;
+}
+
+.page-title {
+    color: #f0a493;
 }
 
 /* Horizontal alignment for picture and text on the front page */
@@ -31,29 +40,33 @@ body{
 }
 
 /* page title styles */
-#title {
-    padding: 20px;
+.title {
+    color: rgb(49, 49, 49);
 }
 
 /* styles for divs for text on pages */
-.work-div, .education-div, .acomplishment-div, .project-div {
-    padding: 25px;
+.work-div,
+.education-div,
+.acomplishment-div,
+.project-div,
+.interest-div {
+    padding-left: 15px;
 }
 
 /* Navigation menu style */
-ul {
+#navigation ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: #F3B5A7;
+    background-color: #f3b5a7;
 }
 
-li {
+#navigation li {
     float: right;
 }
 
-li a {
+#navigation li a {
     display: block;
     color: white;
     text-align: center;
@@ -62,14 +75,19 @@ li a {
     font-size: 18px;
 }
 
-li a:hover {
-  background-color: #F28870;
+#navigation li a:hover {
+  background-color: #f0a493;
 }
 
 /* Style for texts on the page */
 div.text {
     text-indent: 50px;
     line-height: 1.6;
+    color: rgb(63, 63, 63);
+}
+
+p {
+  line-height: 1.8;
 }
 
 div {
@@ -92,7 +110,7 @@ div {
 }
 
 .fa-facebook {
-    background: #3B5998;
+    background: #3b5998;
     color: white;
 }
 
@@ -111,7 +129,7 @@ div {
   color: white;
 }
 
-.fa-github{
+.fa-github {
   background: #1b1b1b;
   color: white;
 }
@@ -119,13 +137,36 @@ div {
 /* Styling footer */
 .footer {
     position: fixed;
-    margin: auto;
     bottom: 0;
     width: 100%;
     max-width: 1250px;
+    margin: 0;
+    padding: 0;
     height: 70px;
-    
-    background-color: #F3B5A7;
+    background-color: #f3b5a7;
     text-align: center;
     text-decoration: white;
+}
+
+/* Postionin picture and text on interests page */
+#description {
+    margin: auto;
+    margin-left: 10px;
+    text-indent: 50px;
+    line-height: 1.8;
+    color: rgb(63, 63, 63);
+}
+
+#description, #picture {
+    float: left;
+    width: 48%;
+    margin: 0;
+    padding: 0;
+}
+
+#picture {
+    margin-right: 10px;
+    margin-top: 20px;
+    margin-left: 35px;
+    margin-bottom: 35px;
 }
