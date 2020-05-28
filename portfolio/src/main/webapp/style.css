@@ -87,7 +87,7 @@ div.text {
 }
 
 p {
-  line-height: 1.8;
+  line-height: 1.6;
 }
 
 div {
@@ -169,4 +169,12 @@ div {
     margin-top: 20px;
     margin-left: 35px;
     margin-bottom: 35px;
+}
+
+.work-div {
+    color: rgb(63, 63, 63);   
+}
+
+#courses {
+    text-indent: 5%;
 }
