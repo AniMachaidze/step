@@ -57,7 +57,7 @@ body {
 #navigation ul {
     list-style-type: none;
     margin: 0;
-    padding: 5px;
+    padding: 0;
     overflow: hidden;
     background-color: #f3b5a7;
 }
@@ -65,13 +65,12 @@ body {
 #navigation #icon {
     float: left;
     margin-left: 20px;
-    margin-top: 5px;
+    margin-top: 7px;
     margin-bottom: 5px;
 }
 
 #navigation #name {
     float: left;
-    padding-top: 3px;
     font-weight: bold;
 }
 
