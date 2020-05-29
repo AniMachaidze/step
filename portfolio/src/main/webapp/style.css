@@ -4,7 +4,7 @@ body {
     font-family: Impact, Charcoal, sans-serif;
     font-size: 18px;
     margin-bottom: 70px;
-
+    line-height: 1.6;
 }
 
 .container {
@@ -47,7 +47,7 @@ body {
 /* styles for divs for text on pages */
 .work-div,
 .education-div,
-.acomplishment-div,
+.accomplishment-div,
 .project-div,
 .interest-div {
     padding-left: 15px;
@@ -67,7 +67,6 @@ body {
     margin-left: 20px;
     margin-top: 5px;
     margin-bottom: 5px;
-    border: white;
 }
 
 #navigation #name {
@@ -101,7 +100,7 @@ body {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    border: 0.3px solid #ffffff;
+    border: 0.4px solid #ffffff;
     overflow: hidden;
 }
 
@@ -112,9 +111,6 @@ div.text {
     color: rgb(63, 63, 63);
 }
 
-p {
-  line-height: 1.6;
-}
 
 /* Social media icon styles */
 .fa {
@@ -157,7 +153,7 @@ p {
 }
 
 /* Styling footer */
-.footer {
+#footer {
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -200,5 +196,37 @@ p {
 #courses {
     display: none;
     text-indent: 5%;
+}
+
+#footer .fa {
+    padding: 7px;
+    font-size: 10px;
+    width: 10px;
+    text-align: center;
+    text-decoration: none;
+    margin: 5px 2px;
+    border-radius: 50%;
+}
+
+#footer .fa-facebook,
+#footer .fa-linkedin,
+#footer .fa-github,
+#footer .fa-instagram,
+#footer .fa-google {
+    background: #f3b5a7;
+    color: white;
+    border: 0.5px solid #ffffff;
+}
+
+#footer-icons {
+    padding-top: 10px;
+    padding-bottom: 3px;
+}
+
+#footer-text {
+    color: white;
+    padding: 0px;
+    margin: 0px;
+    font-size: 13px;
 }
 
