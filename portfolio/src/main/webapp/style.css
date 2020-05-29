@@ -60,7 +60,6 @@ body {
     padding: 5px;
     overflow: hidden;
     background-color: #f3b5a7;
-}
 
 #navigation #icon {
     float: left;
@@ -93,6 +92,7 @@ body {
     background-color: #f0a493;
 }
 
+
 #navigation #name a:hover{
     background-color: #f3b5a7;
 }
@@ -110,7 +110,6 @@ div.text {
     text-indent: 50px;
     line-height: 1.6;
     color: rgb(63, 63, 63);
-}
 
 p {
   line-height: 1.6;
@@ -169,6 +168,7 @@ p {
     text-align: center;
     text-decoration: white;
 }
+
 
 /* Postion of picture and text on interests page */
 #description {
