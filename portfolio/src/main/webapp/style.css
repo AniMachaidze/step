@@ -10,10 +10,11 @@ body {
 .container {
     width: 100%;
     height: 100%;
-    padding-bottom: 0px;
     padding-top: 20px;
-    padding: 30px;
-    max-width: 1200px;
+    padding-bottom: 20px;
+    padding-left: 40px;    
+    padding-right: 40px;
+    max-width: 1150px;
     margin: 0;
 }
 
@@ -170,3 +171,29 @@ div {
     margin-left: 35px;
     margin-bottom: 35px;
 }
+
+.section-title {
+    border: 0 solid #e0e0e0;
+    border-bottom-width: 1px;
+}
+
+.date {
+    float: right;
+    font-size: 20px;
+}
+
+.project-responsibility ul {
+    list-style-type: circle;
+    margin: 30px;
+    padding: 0;
+}
+
+.project-responsibility li {
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+.project-responsibility ul li { 
+    margin-bottom: 1em;
+}
+
