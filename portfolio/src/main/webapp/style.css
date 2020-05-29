@@ -57,9 +57,22 @@ body {
 #navigation ul {
     list-style-type: none;
     margin: 0;
-    padding: 0;
+    padding: 5px;
     overflow: hidden;
     background-color: #f3b5a7;
+
+#navigation #icon {
+    float: left;
+    margin-left: 20px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border: white;
+}
+
+#navigation #name {
+    float: left;
+    padding-top: 3px;
+    font-weight: bold;
 }
 
 #navigation li {
@@ -70,13 +83,26 @@ body {
     display: block;
     color: white;
     text-align: center;
-    padding: 14px 16px;
+    padding: 16px 20px;
     text-decoration: none;
-    font-size: 18px;
+    font-size: 20px;
 }
 
 #navigation li a:hover {
-  background-color: #f0a493;
+    background-color: #f0a493;
+}
+
+
+#navigation #name a:hover{
+    background-color: #f3b5a7;
+}
+
+#logo-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 0.3px solid #ffffff;
+    overflow: hidden;
 }
 
 /* Style for texts on the page */
@@ -84,14 +110,9 @@ div.text {
     text-indent: 50px;
     line-height: 1.6;
     color: rgb(63, 63, 63);
-}
 
 p {
-  line-height: 1.8;
-}
-
-div {
-    display: block;
+  line-height: 1.6;
 }
 
 /* Social media icon styles */
@@ -115,23 +136,23 @@ div {
 }
 
 .fa-google {
-  background: #dd4b39;
-  color: white;
+    background: #dd4b39;
+    color: white;
 }
 
 .fa-linkedin {
-  background: #007bb5;
-  color: white;
+	background: #007bb5;
+	color: white;
 }
 
 .fa-instagram {
-  background: #ec75a6;
-  color: white;
+    background: #ec75a6;
+    color: white;
 }
 
 .fa-github {
-  background: #1b1b1b;
-  color: white;
+    background: #1b1b1b;
+    color: white;
 }
 
 /* Styling footer */
@@ -148,7 +169,8 @@ div {
     text-decoration: white;
 }
 
-/* Postionin picture and text on interests page */
+
+/* Postion of picture and text on interests page */
 #description {
     margin: auto;
     margin-left: 10px;
@@ -170,3 +192,13 @@ div {
     margin-left: 35px;
     margin-bottom: 35px;
 }
+
+.work-div {
+    color: rgb(63, 63, 63);   
+}
+
+#courses {
+    display: none;
+    text-indent: 5%;
+}
+
