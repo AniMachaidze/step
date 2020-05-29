@@ -10,10 +10,11 @@ body {
 .container {
     width: 100%;
     height: 100%;
-    padding-bottom: 0px;
     padding-top: 20px;
-    padding: 30px;
-    max-width: 1200px;
+    padding-bottom: 20px;
+    padding-left: 40px;    
+    padding-right: 40px;
+    max-width: 1150px;
     margin: 0;
 }
 
@@ -54,14 +55,12 @@ body {
 }
 
 /* Navigation menu style */
-#navigation ul {
+/*#navigation ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
     overflow: hidden;
     background-color: #f3b5a7;
-}
-
 #navigation #icon {
     float: left;
     margin-left: 20px;
@@ -91,6 +90,7 @@ body {
     background-color: #f0a493;
 }
 
+
 #navigation #name a:hover{
     background-color: #f3b5a7;
 }
@@ -101,7 +101,7 @@ body {
     border-radius: 50%;
     border: 0.4px solid #ffffff;
     overflow: hidden;
-}
+} */
 
 /* Style for texts on the page */
 div.text {
@@ -165,6 +165,7 @@ div.text {
     text-decoration: white;
 }
 
+
 /* Postion of picture and text on interests page */
 #description {
     margin: auto;
@@ -186,6 +187,31 @@ div.text {
     margin-top: 20px;
     margin-left: 35px;
     margin-bottom: 35px;
+}
+
+.section-title {
+    border: 0 solid #e0e0e0;
+    border-bottom-width: 1px;
+}
+
+.date {
+    float: right;
+    font-size: 20px;
+}
+
+.project-responsibility ul {
+    list-style-type: circle;
+    margin: 30px;
+    padding: 0;
+}
+
+.project-responsibility li {
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+.project-responsibility ul li { 
+    margin-bottom: 1em;
 }
 
 .work-div {
