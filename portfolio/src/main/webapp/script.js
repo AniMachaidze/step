@@ -14,7 +14,37 @@
 
 
 function getRandomMessage() {
-  fetch('/data').then(response => response.text()).then((quote) => {
-    document.getElementById('quote-container').innerText = quote;
+    fetch('/data').then(response => response.text()).then((quote) => {
+        document.getElementById('quote-container').innerText = quote;
+    });
+}
+
+/**
+ * Fetches stats from the servers and adds them to the DOM.
+ */
+function getComments() {	
+  	fetch('/data').then(response => response.json()).then((comment) => {
+    // stats is an object, not a string, so we have to
+    // reference its fields to create HTML content
+
+    console.log(comment.comments);
+    const comentListElement = document.getElementById('comments-container');
+	var i;
+    comentListElement.innerHTML = '';
+    
+    for (i in comment.comments) {
+        console.log(com);
+        var com = comment.comments[i];
+
+        comentListElement.appendChild(
+            createListElement('Date: ' + com.date + ' Author: ' + com.author + ' Comment: ' + com.content));
+    }
   });
+}
+
+/** Creates an <li> element containing text. */
+function createListElement(text) {
+    const liElement = document.createElement('li');
+    liElement.innerText = text;
+    return liElement;
 }

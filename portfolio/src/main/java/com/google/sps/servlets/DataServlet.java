@@ -38,7 +38,7 @@ public class DataServlet extends HttpServlet {
         comments.add("Your portfolio is amazing!");
         comments.add("It looks good, could be better");
         comments.add("Add more content!");
-        comments.add("I love the design, but try to add more info");
+        comments.add("I love the design, but try to add more info"); 
     }
 
     @Override
@@ -46,15 +46,23 @@ public class DataServlet extends HttpServlet {
         String author = "me";
         Date date = new Date();
 
-        for (String commentary: comments) {
-            // Create comment object and convert to json string
-            Comment comment = new Comment(commentary, author, date);
-            String jsonComment = convertToJson(comment);
+        String json = "{ \"comments\": [";
 
-        	// Send the JSON as the response
-            response.setContentType("application/json;");
-        	response.getWriter().println(jsonComment);
-        }
+        for (int i = 0 ; i < comments.size(); i++) {
+            // Create comment object and convert to json string
+            Comment comment = new Comment(comments.get(i), author, date);
+            json += convertToJson(comment);
+
+            if (i != comments.size() - 1) {
+                json += ",";
+            }
+       }
+
+        json += "] }";
+
+        // Send the JSON as the response
+        response.setContentType("application/json;");
+        response.getWriter().println(json);
     }
 
     private String convertToJson(Comment comment) {
@@ -66,8 +74,8 @@ public class DataServlet extends HttpServlet {
         json += "\"" + comment.getContent() + "\"";
         json += ", ";
         json += "\"date\": ";
-        json += comment.getDate();
-        json += "}";
+        json += "\"" + comment.getDate() + "\"";
+        json += "}"; 
         return json;
  	}
 
