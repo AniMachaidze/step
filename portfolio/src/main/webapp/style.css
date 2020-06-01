@@ -55,12 +55,14 @@ body {
 }
 
 /* Navigation menu style */
-/*#navigation ul {
+#navigation ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
     overflow: hidden;
     background-color: #f3b5a7;
+}
+
 #navigation #icon {
     float: left;
     margin-left: 20px;
@@ -101,7 +103,7 @@ body {
     border-radius: 50%;
     border: 0.4px solid #ffffff;
     overflow: hidden;
-} */
+} 
 
 /* Style for texts on the page */
 div.text {
@@ -109,7 +111,6 @@ div.text {
     line-height: 1.6;
     color: rgb(63, 63, 63);
 }
-
 
 /* Social media icon styles */
 .fa {
@@ -219,7 +220,6 @@ div.text {
 }
 
 #courses {
-    display: none;
     text-indent: 5%;
 }
 

@@ -14,19 +14,65 @@
 
 package com.google.sps.servlets;
 
+import com.google.sps.data.Comment;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Date;
 
-/** Servlet that returns some example content. TODO: modify this file to handle comments data */
+ 
+
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
-  @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("text/html;");
-    response.getWriter().println("<h1>Hello world!</h1>");
-  }
+	private List<String> comments;
+
+ 	@Override
+    public void init() {
+        comments = new ArrayList<>();
+
+        comments.add("Your portfolio is amazing!");
+        comments.add("It looks good, could be better");
+        comments.add("Add more content!");
+        comments.add("I love the design, but try to add more info");
+    }
+
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String author = "me";
+        Date date = new Date();
+
+        for (String commentary: comments) {
+            // Create comment object and convert to json string
+            Comment comment = new Comment(commentary, author, date);
+            String jsonComment = convertToJson(comment);
+
+        	// Send the JSON as the response
+            response.setContentType("application/json;");
+        	response.getWriter().println(jsonComment);
+        }
+    }
+
+    private String convertToJson(Comment comment) {
+        String json = "{";
+        json += "\"author\": ";
+        json += "\"" + comment.getAuthor() + "\"";
+        json += ", ";
+        json += "\"content\": ";
+        json += "\"" + comment.getContent() + "\"";
+        json += ", ";
+        json += "\"date\": ";
+        json += comment.getDate();
+        json += "}";
+        return json;
+ 	}
+
+
 }
+
+
+
