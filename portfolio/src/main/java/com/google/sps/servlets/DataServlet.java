@@ -14,6 +14,7 @@
 
 package com.google.sps.servlets;
 
+import com.google.sps.data.Comment;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,42 +22,56 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
+
+ 
 
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
-	private List<String> quotes;
-
+	private List<String> comments;
 
  	@Override
     public void init() {
-        quotes = new ArrayList<>();
+        comments = new ArrayList<>();
 
-        quotes.add(
-            "A ship in port is safe, but that is not what ships are for. "
-                + "Sail out to sea and do new things. - Grace Hopper");
-        quotes.add("They told me computers could only do arithmetic. - Grace Hopper");
-        quotes.add("A ship in port is safe, but that's not what ships are built for. - Grace Hopper");
-        quotes.add("It is much easier to apologise than it is to get permission. - Grace Hopper");
-        quotes.add("If you can't give me poetry, can't you give me poetical science? - Ada Lovelace");
-        quotes.add("I am in a charming state of confusion. - Ada Lovelace");
-        quotes.add(
-            "The Analytical Engine weaves algebraic patterns, "
-                + "just as the Jacquard loom weaves flowers and leaves. - Ada Lovelace");
-        quotes.add(
-            "Sometimes it is the people no one can imagine anything of "
-                + "who do the things no one can imagine. - Alan Turing");
-        quotes.add("Those who can imagine anything, can create the impossible. - Alan Turing");
+        comments.add("Your portfolio is amazing!");
+        comments.add("It looks good, could be better");
+        comments.add("Add more content!");
+        comments.add("I love the design, but try to add more info");
     }
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String author = "me";
+        Date date = new Date();
 
-        String quote = quotes.get((int) (Math.random() * quotes.size()));
+        for (String commentary: comments) {
+            // Create comment object and convert to json string
+            Comment comment = new Comment(commentary, author, date);
+            String jsonComment = convertToJson(comment);
 
-        response.setContentType("text/html;");
-        response.getWriter().println(quote);
+        	// Send the JSON as the response
+            response.setContentType("application/json;");
+        	response.getWriter().println(jsonComment);
+        }
     }
+
+    private String convertToJson(Comment comment) {
+        String json = "{";
+        json += "\"author\": ";
+        json += "\"" + comment.getAuthor() + "\"";
+        json += ", ";
+        json += "\"content\": ";
+        json += "\"" + comment.getContent() + "\"";
+        json += ", ";
+        json += "\"date\": ";
+        json += comment.getDate();
+        json += "}";
+        return json;
+ 	}
+
+
 }
 
 
