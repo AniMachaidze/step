@@ -29,29 +29,21 @@ import java.util.Date;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
-	private List<String> comments;
+	private List<Comment> comments;
 
  	@Override
     public void init() {
         comments = new ArrayList<>();
-
-        comments.add("Your portfolio is amazing!");
-        comments.add("It looks good, could be better");
-        comments.add("Add more content!");
-        comments.add("I love the design, but try to add more info"); 
     }
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String author = "me";
-        Date date = new Date();
 
         String json = "{ \"comments\": [";
 
         for (int i = 0 ; i < comments.size(); i++) {
-            // Create comment object and convert to json string
-            Comment comment = new Comment(comments.get(i), author, date);
-            json += convertToJson(comment);
+
+            json += convertToJson(comments.get(i));
 
             if (i != comments.size() - 1) {
                 json += ",";
@@ -64,6 +56,19 @@ public class DataServlet extends HttpServlet {
         response.setContentType("application/json;");
         response.getWriter().println(json);
     }
+
+    @Override
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        // Get the input from the form.
+        String author = getParameter(request, "author", "unknown");
+        String text = getParameter(request, "text", "");
+
+        // creates new comment object and puts into list
+        comments.add(new Comment(text, author, new Date()));
+
+        response.sendRedirect("/index.html");
+    }
+
 
     private String convertToJson(Comment comment) {
         String json = "{";
@@ -78,6 +83,14 @@ public class DataServlet extends HttpServlet {
         json += "}"; 
         return json;
  	}
+
+    private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+        String value = request.getParameter(name);
+        if (value == null) {
+        return defaultValue;
+        }
+        return value;
+    }
 
 
 }

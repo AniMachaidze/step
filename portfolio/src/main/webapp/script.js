@@ -12,13 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
-function getRandomMessage() {
-    fetch('/data').then(response => response.text()).then((quote) => {
-        document.getElementById('quote-container').innerText = quote;
-    });
-}
-
 /**
  * Fetches stats from the servers and adds them to the DOM.
  */
