@@ -12,15 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/**
- * Shows courses div when clicked
- */
-function open() {
-  var x = document.getElementById("courses");
-  if (x.style.display === "none") {
-    x.style.display = "";
-  } else {
-    x.style.display = "none";
-  }
-}
 
+function getRandomMessage() {
+  fetch('/data').then(response => response.text()).then((quote) => {
+    document.getElementById('quote-container').innerText = quote;
+  });
+}
