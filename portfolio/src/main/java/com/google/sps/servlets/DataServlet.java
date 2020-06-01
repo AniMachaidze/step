@@ -38,13 +38,12 @@ public class DataServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
+        // creates json string from comments list
+    	// TODO: use GSON instead   
         String json = "{ \"comments\": [";
 
         for (int i = 0 ; i < comments.size(); i++) {
-
             json += convertToJson(comments.get(i));
-
             if (i != comments.size() - 1) {
                 json += ",";
             }
@@ -69,7 +68,9 @@ public class DataServlet extends HttpServlet {
         response.sendRedirect("/index.html");
     }
 
-
+	/**
+    * Converts Comment object to JSON object
+    */
     private String convertToJson(Comment comment) {
         String json = "{";
         json += "\"author\": ";
@@ -84,6 +85,9 @@ public class DataServlet extends HttpServlet {
         return json;
  	}
 
+    /**
+    * Gets parameter from the list and changes the value by default if empty
+    */
     private String getParameter(HttpServletRequest request, String name, String defaultValue) {
         String value = request.getParameter(name);
         if (value == null) {
@@ -92,8 +96,4 @@ public class DataServlet extends HttpServlet {
         return value;
     }
 
-
 }
-
-
-

@@ -25,6 +25,7 @@ function getComments() {
 	var i;
     comentListElement.innerHTML = '';
     
+    // gets each object from json list and appends as a <li> item
     for (i in comment.comments) {
         console.log(com);
         var com = comment.comments[i];
