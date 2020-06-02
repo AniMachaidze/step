@@ -13,32 +13,27 @@
 // limitations under the License.
 
 /**
- * Fetches stats from the servers and adds them to the DOM.
+ * Fetches comments from the servers and adds them to the DOM.
  */
-function getComments() {	
-  	fetch('/data').then(response => response.json()).then((comment) => {
-    // stats is an object, not a string, so we have to
-    // reference its fields to create HTML content
+function getComments() {
+	fetch('/data').then(response => response.json()).then((comment) => {
 
-    console.log(comment.comments);
-    const comentListElement = document.getElementById('comments-container');
-	var i;
-    comentListElement.innerHTML = '';
-    
-    // gets each object from json list and appends as a <li> item
-    for (i in comment.comments) {
-        console.log(com);
-        var com = comment.comments[i];
+		const commentListElement = document.getElementById('comments-container');
+		var i;
+		commentListElement.innerHTML = '';
 
-        comentListElement.appendChild(
-            createListElement('Date: ' + com.date + ' Author: ' + com.author + ' Comment: ' + com.content));
-    }
-  });
+		for (i in comment.comments) {
+			var com = comment.comments[i];
+
+			commentListElement.appendChild(
+				createListElement('Date: ' + com.date + ' Author: ' + com.author + ' Comment: ' + com.content));
+		}
+	});
 }
 
 /** Creates an <li> element containing text. */
 function createListElement(text) {
-    const liElement = document.createElement('li');
-    liElement.innerText = text;
-    return liElement;
+	const liElement = document.createElement('li');
+	liElement.innerText = text;
+	return liElement;
 }

@@ -38,7 +38,6 @@ public class DataServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        // creates json string from comments list
     	// TODO: use GSON instead   
         String json = "{ \"comments\": [";
 
@@ -51,20 +50,16 @@ public class DataServlet extends HttpServlet {
 
         json += "] }";
 
-        // Send the JSON as the response
         response.setContentType("application/json;");
         response.getWriter().println(json);
     }
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        // Get the input from the form.
         String author = getParameter(request, "author", "unknown");
         String text = getParameter(request, "text", "");
 
-        // creates new comment object and puts into list
         comments.add(new Comment(text, author, new Date()));
-
         response.sendRedirect("/index.html");
     }
 
