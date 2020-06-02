@@ -15,6 +15,12 @@
 package com.google.sps.servlets;
 
 import com.google.sps.data.Comment;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,39 +30,79 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
 
+
  
 
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
-	private List<String> comments;
+	private List<Comment> comments;
 
  	@Override
     public void init() {
         comments = new ArrayList<>();
-
-        comments.add("Your portfolio is amazing!");
-        comments.add("It looks good, could be better");
-        comments.add("Add more content!");
-        comments.add("I love the design, but try to add more info");
     }
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String author = "me";
-        Date date = new Date();
 
-        for (String commentary: comments) {
-            // Create comment object and convert to json string
-            Comment comment = new Comment(commentary, author, date);
-            String jsonComment = convertToJson(comment);
+        Query query = new Query("Comment").addSort("date", SortDirection.DESCENDING);
 
-        	// Send the JSON as the response
-            response.setContentType("application/json;");
-        	response.getWriter().println(jsonComment);
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        PreparedQuery results = datastore.prepare(query);
+
+        for (Entity entity : results.asIterable()) {
+            String author = (String) entity.getProperty("author");
+            String text = (String) entity.getProperty("text");
+            Date date = (Date) entity.getProperty("date");
+
+            Comment comment = new Comment(text, author, date);
+            comments.add(comment);
         }
+
+        // TODO: use GSON instead   
+        String json = "{ \"comments\": [";
+
+        for (int i = 0 ; i < comments.size(); i++) {
+            json += convertToJson(comments.get(i));
+            if (i != comments.size() - 1) {
+                json += ",";
+            }
+        }
+        
+        json += "] }";
+
+        response.setContentType("application/json;");
+        response.getWriter().println(json);
+
+/*
+        Gson gson = new Gson();
+
+        response.setContentType("application/json;");
+        response.getWriter().println(gson.toJson(tasks));
+*/
     }
 
+    @Override
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String author = getParameter(request, "author", "unknown");
+        String text = getParameter(request, "text", "");
+        long date = System.currentTimeMillis();
+
+        Entity commentEntity = new Entity("Comment");
+        commentEntity.setProperty("author", author);
+        commentEntity.setProperty("text", text);
+        commentEntity.setProperty("date", new Date());
+
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        datastore.put(commentEntity);
+
+        response.sendRedirect("/index.html");
+    }
+
+	/**
+    * Converts Comment object to JSON object
+    */
     private String convertToJson(Comment comment) {
         String json = "{";
         json += "\"author\": ";
@@ -66,13 +112,20 @@ public class DataServlet extends HttpServlet {
         json += "\"" + comment.getContent() + "\"";
         json += ", ";
         json += "\"date\": ";
-        json += comment.getDate();
-        json += "}";
+        json += "\"" + comment.getDate() + "\"";
+        json += "}"; 
         return json;
  	}
 
+    /**
+    * Gets parameter from the list and changes the value by default if empty
+    */
+    private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+        String value = request.getParameter(name);
+        if (value == null) {
+        return defaultValue;
+        }
+        return value;
+    }
 
 }
-
-
-

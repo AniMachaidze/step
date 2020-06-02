@@ -12,9 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/**
+ * Fetches comments from the servers and adds them to the DOM.
+ */
+function getComments() {
+	fetch('/data').then(response => response.json()).then((comment) => {
 
-function getRandomMessage() {
-  fetch('/data').then(response => response.text()).then((quote) => {
-    document.getElementById('quote-container').innerText = quote;
-  });
+		const commentListElement = document.getElementById('comments-container');
+		var i;
+		commentListElement.innerHTML = '';
+
+		for (i in comment.comments) {
+			var com = comment.comments[i];
+
+			commentListElement.appendChild(
+				createListElement('Date: ' + com.date + ' Author: ' + com.author + ' Comment: ' + com.content));
+		}
+	});
+}
+
+/** Creates an <li> element containing text. */
+function createListElement(text) {
+	const liElement = document.createElement('li');
+	liElement.innerText = text;
+	return liElement;
 }
