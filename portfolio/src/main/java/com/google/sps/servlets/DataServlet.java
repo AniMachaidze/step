@@ -29,28 +29,31 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
-
-
- 
+import com.google.gson.Gson; 
 
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
 	private List<Comment> comments;
 
- 	@Override
-    public void init() {
-        comments = new ArrayList<>();
-    }
-
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         Query query = new Query("Comment").addSort("date", SortDirection.DESCENDING);
 
+        String commentNumStr = request.getParameter("number");
+        int commentNum = 0;
+
+        try {
+            commentNum = Integer.parseInt(commentNumStr);
+        } catch (NumberFormatException e) {
+            System.err.println("Could not convert to int: " + commentNumStr);
+        }
+
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         PreparedQuery results = datastore.prepare(query);
 
+        comments = new ArrayList<>();
         for (Entity entity : results.asIterable()) {
             String author = (String) entity.getProperty("author");
             String text = (String) entity.getProperty("text");
@@ -58,29 +61,15 @@ public class DataServlet extends HttpServlet {
 
             Comment comment = new Comment(text, author, date);
             comments.add(comment);
+
+            commentNum --; 
+            if (commentNum == 0) break;
         }
 
-        // TODO: use GSON instead   
-        String json = "{ \"comments\": [";
-
-        for (int i = 0 ; i < comments.size(); i++) {
-            json += convertToJson(comments.get(i));
-            if (i != comments.size() - 1) {
-                json += ",";
-            }
-        }
-        
-        json += "] }";
-
-        response.setContentType("application/json;");
-        response.getWriter().println(json);
-
-/*
         Gson gson = new Gson();
 
         response.setContentType("application/json;");
-        response.getWriter().println(gson.toJson(tasks));
-*/
+        response.getWriter().println(gson.toJson(comments));
     }
 
     @Override
@@ -99,23 +88,6 @@ public class DataServlet extends HttpServlet {
 
         response.sendRedirect("/index.html");
     }
-
-	/**
-    * Converts Comment object to JSON object
-    */
-    private String convertToJson(Comment comment) {
-        String json = "{";
-        json += "\"author\": ";
-        json += "\"" + comment.getAuthor() + "\"";
-        json += ", ";
-        json += "\"content\": ";
-        json += "\"" + comment.getContent() + "\"";
-        json += ", ";
-        json += "\"date\": ";
-        json += "\"" + comment.getDate() + "\"";
-        json += "}"; 
-        return json;
- 	}
 
     /**
     * Gets parameter from the list and changes the value by default if empty
