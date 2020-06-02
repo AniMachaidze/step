@@ -15,6 +15,12 @@
 package com.google.sps.servlets;
 
 import com.google.sps.data.Comment;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -23,6 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
+
 
  
 
@@ -38,7 +45,22 @@ public class DataServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    	// TODO: use GSON instead   
+
+        Query query = new Query("Comment").addSort("date", SortDirection.DESCENDING);
+
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        PreparedQuery results = datastore.prepare(query);
+
+        for (Entity entity : results.asIterable()) {
+            String author = (String) entity.getProperty("author");
+            String text = (String) entity.getProperty("text");
+            Date date = (Date) entity.getProperty("date");
+
+            Comment comment = new Comment(text, author, date);
+            comments.add(comment);
+        }
+
+        // TODO: use GSON instead   
         String json = "{ \"comments\": [";
 
         for (int i = 0 ; i < comments.size(); i++) {
@@ -46,20 +68,35 @@ public class DataServlet extends HttpServlet {
             if (i != comments.size() - 1) {
                 json += ",";
             }
-       }
-
+        }
+        
         json += "] }";
 
         response.setContentType("application/json;");
         response.getWriter().println(json);
+
+/*
+        Gson gson = new Gson();
+
+        response.setContentType("application/json;");
+        response.getWriter().println(gson.toJson(tasks));
+*/
     }
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String author = getParameter(request, "author", "unknown");
         String text = getParameter(request, "text", "");
+        long date = System.currentTimeMillis();
 
-        comments.add(new Comment(text, author, new Date()));
+        Entity commentEntity = new Entity("Comment");
+        commentEntity.setProperty("author", author);
+        commentEntity.setProperty("text", text);
+        commentEntity.setProperty("date", new Date());
+
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        datastore.put(commentEntity);
+
         response.sendRedirect("/index.html");
     }
 
