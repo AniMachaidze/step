@@ -31,6 +31,18 @@ function getComments() {
 	});
 }
 
+
+/**
+ * Fetches delete-data, deletes all commennts and then calls getComments to show empty comment list.
+ */
+function deleteComments() {
+    fetch('/delete-data', {
+        method: 'POST'
+    });
+
+    getComments();
+}
+
 /** Creates an <li> element containing text. */
 function createListElement(text) {
 	const liElement = document.createElement('li');
