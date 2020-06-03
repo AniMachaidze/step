@@ -16,19 +16,31 @@
  * Fetches comments from the servers and adds them to the DOM.
  */
 function getComments() {
-	fetch('/data').then(response => response.json()).then((comment) => {
+    const numberEl = document.getElementById("comments-number");
+    const value = numberEl.options[numberEl.selectedIndex].value;
+    
+	fetch('/data' + '?comments-number=' + value).then(response => response.json()).then((comments) => {
 
 		const commentListElement = document.getElementById('comments-container');
-		var i;
+
 		commentListElement.innerHTML = '';
-
-		for (i in comment.comments) {
-			var com = comment.comments[i];
-
-			commentListElement.appendChild(
-				createListElement('Date: ' + com.date + ' Author: ' + com.author + ' Comment: ' + com.content));
-		}
+        comments.forEach((comment) => {
+            commentListElement.appendChild(
+				createListElement('Date: ' + comment.date + ' Author: ' + comment.author + ' Comment: ' + comment.content));
+        })
 	});
+}
+
+
+/**
+ * Fetches delete-data, deletes all commennts and then calls getComments to show empty comment list.
+ */
+function deleteComments() {
+    fetch('/delete-data', {
+        method: 'POST'
+    });
+
+    document.getElementById('comments-container').innerHTML = '';
 }
 
 /** Creates an <li> element containing text. */

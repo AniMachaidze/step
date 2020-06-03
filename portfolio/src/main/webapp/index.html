@@ -72,10 +72,19 @@
             </div> 
             
             <div id="comments">
-                <button onclick="getComments()">See all comments</button>
+                <label for="comments-number">Choose number of comments</label>
+                    <select name="comments-number" id="comments-number" onchange="getComments()">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                    </select>
+                <br>
+                <button onclick="getComments()">See comments</button>
             	<ul id="comments-container"></ul>
+                <br>
+                <button onclick="deleteComments()">Delete all comments</button>
             </div>
-
         </div>
 
         <div id="footer">
