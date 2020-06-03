@@ -14,26 +14,18 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.List;
-
 
 @WebServlet("/delete-data")
 public class DeleteDataServlet extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        // TODO: figure out if there is better way to delete entities
         Query query = new Query("Comment");
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         PreparedQuery results = datastore.prepare(query);
-        
-        List<Entity> comments = new ArrayList<>();
         for (Entity entity : results.asIterable()) {
-            comments.add(entity);
-        }
-        
-        for (int i = 0; i < comments.size(); i++) {
-            Key commentEntityKey = comments.get(i).getKey();
+            Key commentEntityKey = entity.getKey();
             datastore.delete(commentEntityKey);
         }
 

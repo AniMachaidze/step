@@ -16,10 +16,10 @@
  * Fetches comments from the servers and adds them to the DOM.
  */
 function getComments() {
-    const numberEl = document.getElementById("number");
+    const numberEl = document.getElementById("comments-number");
     const value = numberEl.options[numberEl.selectedIndex].value;
     
-	fetch('/data' + '?number=' + value).then(response => response.json()).then((comments) => {
+	fetch('/data' + '?comments-number=' + value).then(response => response.json()).then((comments) => {
 
 		const commentListElement = document.getElementById('comments-container');
 
@@ -40,7 +40,7 @@ function deleteComments() {
         method: 'POST'
     });
 
-    getComments();
+    document.getElementById('comments-container').innerHTML = '';
 }
 
 /** Creates an <li> element containing text. */

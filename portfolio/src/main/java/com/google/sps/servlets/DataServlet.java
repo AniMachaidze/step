@@ -35,17 +35,20 @@ import com.google.gson.Gson;
 public class DataServlet extends HttpServlet {
 
 	private List<Comment> comments;
+    static final int DEFAULT_COMMENTS_NUMBER = 5;
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-        String commentNumStr = getParameter(request, "number", "5");
-        int commentNum = 0;
-
-        try {
-            commentNum = Integer.parseInt(commentNumStr);
-        } catch (NumberFormatException e) {
-            System.err.println("Could not convert to int: " + commentNumStr);
+        int maxNumComments = 0;
+        String maxNumCommentsStr = request.getParameter("comments-number");
+        if (maxNumCommentsStr.isEmpty()) {
+            maxNumComments = DEFAULT_COMMENTS_NUMBER;
+        } else {
+            try {
+                maxNumComments = Integer.parseInt(maxNumCommentsStr);
+            } catch (NumberFormatException e) {
+                System.err.println("Could not convert to int: " + maxNumCommentsStr);
+            }
         }
 
         Query query = new Query("Comment").addSort("date", SortDirection.DESCENDING);
@@ -53,16 +56,23 @@ public class DataServlet extends HttpServlet {
         PreparedQuery results = datastore.prepare(query);
 
         comments = new ArrayList<>();
+        String author, text;
+        Date date;
         for (Entity entity : results.asIterable()) {
-            String author = (String) entity.getProperty("author");
-            String text = (String) entity.getProperty("text");
-            Date date = (Date) entity.getProperty("date");
+            try {
+                author = (String) entity.getProperty("author");
+                text = (String) entity.getProperty("text");
+                date = (Date) entity.getProperty("date");
+            } catch (ClassCastException e) {
+                System.err.println("Could not cast entry property");
+                break;                
+            }
 
             Comment comment = new Comment(text, author, date);
             comments.add(comment);
 
-            commentNum --; 
-            if (commentNum == 0) break;
+            maxNumComments --; 
+            if (maxNumComments <= 0) break;
         }
 
         Gson gson = new Gson();
@@ -94,7 +104,7 @@ public class DataServlet extends HttpServlet {
     private String getParameter(HttpServletRequest request, String name, String defaultValue) {
         String value = request.getParameter(name);
         if (value == null) {
-        return defaultValue;
+            return defaultValue;
         }
         return value;
     }
