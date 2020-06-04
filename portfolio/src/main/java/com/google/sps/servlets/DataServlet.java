@@ -51,7 +51,9 @@ public class DataServlet extends HttpServlet {
             }
         }
 
-        Query query = new Query("Comment").addSort("date", SortDirection.DESCENDING);
+        String page = request.getParameter("page");
+
+        Query query = new Query("Comment-" + page).addSort("date", SortDirection.DESCENDING);
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         PreparedQuery results = datastore.prepare(query);
 
@@ -85,9 +87,10 @@ public class DataServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String author = getParameter(request, "author", "unknown");
         String text = getParameter(request, "text", "");
+        String page = getParameter(request, "page", "index.html");
         long date = System.currentTimeMillis();
 
-        Entity commentEntity = new Entity("Comment");
+        Entity commentEntity = new Entity("Comment-" + page);
         commentEntity.setProperty("author", author);
         commentEntity.setProperty("text", text);
         commentEntity.setProperty("date", new Date());
@@ -95,7 +98,7 @@ public class DataServlet extends HttpServlet {
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         datastore.put(commentEntity);
 
-        response.sendRedirect("/index.html");
+        response.sendRedirect(page);
     }
 
     /**

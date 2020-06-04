@@ -16,31 +16,39 @@
  * Fetches comments from the servers and adds them to the DOM.
  */
 function getComments() {
-    const numberEl = document.getElementById("comments-number");
-    const value = numberEl.options[numberEl.selectedIndex].value;
-    
-	fetch('/data' + '?comments-number=' + value).then(response => response.json()).then((comments) => {
+	const numberEl = document.getElementById("comments-number");
+	const value = numberEl.options[numberEl.selectedIndex].value;
+	const pageEl = document.getElementById("page");
+	const page = pageEl.value;
 
-		const commentListElement = document.getElementById('comments-container');
+	fetch('/data' + '?comments-number=' + value + '&page=' + page).then(response => response.json())
+		.then((comments) => {
 
-		commentListElement.innerHTML = '';
-        comments.forEach((comment) => {
-            commentListElement.appendChild(
-				createListElement('Date: ' + comment.date + ' Author: ' + comment.author + ' Comment: ' + comment.content));
-        })
-	});
+			const commentListElement = document.getElementById('comments-container');
+
+			commentListElement.innerHTML = '';
+			comments.forEach((comment) => {
+				let date = new Date(comment.date);
+				commentListElement.appendChild(
+					createListElement(comment.author + ' ' +
+						date.getMonth() + '/' + date.getDate() + '/' +
+						date.getFullYear() + '\n' +
+						comment.content));
+			})
+	    });
 }
 
-
 /**
- * Fetches delete-data, deletes all commennts and then calls getComments to show empty comment list.
+ * Fetches delete-data, deletes all commennts
  */
 function deleteComments() {
-    fetch('/delete-data', {
-        method: 'POST'
-    });
+	const pageEl = document.getElementById("page");
+	const page = pageEl.value;
+	fetch('/delete-data?page=' + page, {
+		method: 'POST'
+	});
 
-    document.getElementById('comments-container').innerHTML = '';
+	document.getElementById('comments-container').innerHTML = '';
 }
 
 /** Creates an <li> element containing text. */

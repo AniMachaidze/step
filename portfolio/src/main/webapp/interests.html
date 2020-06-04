@@ -8,58 +8,81 @@
       <script src="script.js"></script>
    </head>
    <body>
+      <div id="navigation">
+         <ul>
+            <li id="icon">
+               <div id="logo-image">
+                  <img src="images/icon-ani.jpg" width="50" height="50" href="index.html"/>
+               </div>
+            </li>
+            <li id="name"><a href="index.html">Ani Machaidze</a>
+            <li><a href="interests.html">Interests</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="career.html">Career</a></li>
+            <li><a href="index.html">About</a></li>
+         </ul>
+      </div>
 
-        <div id="navigation">
-            <ul>
-                <li id="icon">
-                    <div id="logo-image">
-                    <img src="images/icon-ani.jpg" width="50" height="50" href="index.html"/>
-                	</div></li>
-                <li id="name"><a href="index.html">Ani Machaidze</a>
-                <li><a href="interests.html">Interests</a></li>
-                <li><a href="projects.html">Projects</a></li>
-                <li><a href="career.html">Career</a></li>
-                <li><a href="index.html">About</a></li>
-            </ul>
-        </div>
-
-    <div class="container">
-        <div class="page-title">
+      <div class="container">
+         <div class="page-title">
             <h1>My Interests</h1>
-        </div> 
-
-        <div class="title">
+         </div>
+         <div class="title">
             <h2>Photography</h2>
-        </div>
-
-        <div class="interest-div">
+         </div>
+         <div class="interest-div">
             <div id="description">
-                <p>I have been interested in Photography for a long time, however last year was
-                    the first time when I got formal education in Photography.
-                    I took a course at Penn called FNAR 340 Introduction to digital photography.
-                    I learned a lot about different types of photography, cameras and tools used
-                    to edit pictures, as well as understanding and critiquing pictures.
-                    I enjoy portrait photography, depicting people in their 
-                    natural positions and actions.</p>
+               <p>I have been interested in Photography for a long time, however last year was
+                  the first time when I got formal education in Photography.
+                  I took a course at Penn called FNAR 340 Introduction to digital photography.
+                  I learned a lot about different types of photography, cameras and tools used
+                  to edit pictures, as well as understanding and critiquing pictures.
+                  I enjoy portrait photography, depicting people in their 
+                  natural positions and actions.
+               </p>
             </div>
-
             <div id="picture">
-                 <img src="images/photography.jpg" width="500"/> 
+               <img src="images/photography.jpg" width="500"/> 
             </div>
-        </div>
+         </div>
 
-    </div>
-
+         <!-- Fix the positioning for comment section --> 
+         <div id="comments">
+            <div id="comments-form">
+               <form action="/data" method="POST">
+                  <p>Add a comment:</p>
+                  <input type="text" name="author" id="author" placeholder="Your name..">
+                  <textarea type="text" name="text" id="text" placeholder="Your comment.."></textarea>
+                  <input hidden name="page" value="interests.html" id="page">
+                  <br/>
+                  <input type="submit"/>
+               </form>
+            </div>
     
-        <div id="footer">
-            <div id="footer-icons">
-                <a href="https://www.linkedin.com/in/ani-m" class="fa fa-linkedin"></a>
-                <a href="https://github.com/AniMachaidze" class="fa fa-github"></a>
-                <a href="mailto:animachaidze@gmail.com" class="fa fa-google"></a>
-                <a href="https://www.facebook.com/ani.machaidze4" class="fa fa-facebook"></a>
-                <a href="https://www.instagram.com/ani.machaidze/?hl=en" class="fa fa-instagram"></a>
-            </div>
-            <p id="footer-text">@Ani Machaidze, 2020</p>
-        </div>
+            <label for="comments-number">Comments&nbsp;&nbsp;</label>
+            <select name="comments-number" id="comments-number" onchange="getComments()">
+               <option value="5">5</option>
+               <option value="10">10</option>
+               <option value="15">15</option>
+               <option value="20">20</option>
+            </select>
+            <br>
+            <ul id="comments-container">
+            </ul>
+            <br>
+            <button onclick="deleteComments()" id="delete-comments">Delete all comments</button>
+         </div>
+      </div>
+
+      <div id="footer">
+         <div id="footer-icons">
+            <a href="https://www.linkedin.com/in/ani-m" class="fa fa-linkedin"></a>
+            <a href="https://github.com/AniMachaidze" class="fa fa-github"></a>
+            <a href="mailto:animachaidze@gmail.com" class="fa fa-google"></a>
+            <a href="https://www.facebook.com/ani.machaidze4" class="fa fa-facebook"></a>
+            <a href="https://www.instagram.com/ani.machaidze/?hl=en" class="fa fa-instagram"></a>
+         </div>
+         <p id="footer-text">@Ani Machaidze, 2020</p>
+      </div>
    </body>
 </html>
