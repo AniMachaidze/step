@@ -6,6 +6,7 @@
       <link rel="stylesheet" href="style.css">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
       <script src="script.js"></script>
+      <script src='https://kit.fontawesome.com/015340ae6d.js'></script>
    </head>
    <body onload="getComments()">
       <div id="navigation">
@@ -122,7 +123,7 @@
             <h2 class="section-title">Skills</h2>
             <div class="work-div">
                <p>Programming Languages and Skills:
-                  Java, C, C++, OCaml, HTML, CSS, Algorithms, Data Structures.
+                  Java, C, C++, OCaml, HTML, CSS, JavaScript, Algorithms, Data Structures.
                </p>
                <p>Languages: English, Georgian, Russian</p>
             </div>
@@ -142,7 +143,16 @@
                <form action="/data" method="POST">
                   <p>Add a comment:</p>
                   <input type="text" name="author" id="author" placeholder="Your name..">
-                  <textarea type="text" name="text" id="text" placeholder="Your comment.."></textarea>
+                  <div id="horizontal-wrapper"> 
+                    <!-- TODO: change with different type of emoji --> 
+                    <select name="emotion" id="emotion">
+                        <option value="happy" class="fa-grin-stars">&#128522;</option>
+                        <option value="laughting" class="fas fa-laugh-beam">&#128516;</option>
+                        <option value="surprised" class="fas fa-surprise">&#128562;</option>
+                        <option value="sad" class="fas fa-frown">&#128532;</option>
+                    </select>
+                    <textarea type="text" name="text" id="text" placeholder="Your comment.."></textarea>
+                  </div>
                   <input hidden name="page" value="career.html" id="page">
                   <br/>
                   <input type="submit"/>
