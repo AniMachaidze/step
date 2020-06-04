@@ -30,10 +30,9 @@ function getComments() {
 			comments.forEach((comment) => {
 				let date = new Date(comment.date);
 				commentListElement.appendChild(
-					createListElement(comment.author + ' ' +
+					createListElement(comment.author, 
 						date.getMonth() + '/' + date.getDate() + '/' +
-						date.getFullYear() + '\n' +
-						comment.content));
+						date.getFullYear(), comment.content));
 			})
 	    });
 }
@@ -52,8 +51,9 @@ function deleteComments() {
 }
 
 /** Creates an <li> element containing text. */
-function createListElement(text) {
+function createListElement(author, date, text) {
 	const liElement = document.createElement('li');
-	liElement.innerText = text;
+	liElement.innerText = author.bold();
+    liElement.
 	return liElement;
 }

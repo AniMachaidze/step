@@ -22,7 +22,6 @@ public class DeleteDataServlet extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        // TODO: figure out if there is better way to delete entities
         String page = request.getParameter("page");
         Query query = new Query("Comment-" + page);
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
