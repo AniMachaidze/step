@@ -87,13 +87,13 @@ public class DataServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String author = getParameter(request, "author", "unknown");
         String text = getParameter(request, "text", "");
-        String page = getParameter(request, "page", "index.html");
-        long date = System.currentTimeMillis();
+        String page = getParameter(request, "page", "unknown");
+        Date date = new Date();
 
         Entity commentEntity = new Entity("Comment-" + page);
         commentEntity.setProperty("author", author);
         commentEntity.setProperty("text", text);
-        commentEntity.setProperty("date", new Date());
+        commentEntity.setProperty("date", date);
 
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         datastore.put(commentEntity);
