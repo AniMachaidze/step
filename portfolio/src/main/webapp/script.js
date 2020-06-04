@@ -23,7 +23,6 @@ function getComments() {
 
 	fetch('/data' + '?comments-number=' + value + '&page=' + page).then(response => response.json())
 		.then((comments) => {
-
 			const commentListElement = document.getElementById('comments-container');
 
 			commentListElement.innerHTML = '';
@@ -32,7 +31,7 @@ function getComments() {
 				commentListElement.appendChild(
 					createListElement(comment.author, 
 						date.getMonth() + '/' + date.getDate() + '/' +
-						date.getFullYear(), comment.content));
+						date.getFullYear(), comment.content, comment.emotion));
 			})
 	    });
 }
@@ -51,9 +50,40 @@ function deleteComments() {
 }
 
 /** Creates an <li> element containing text. */
-function createListElement(author, date, text) {
+function createListElement(author, date, text, emotion) {
 	const liElement = document.createElement('li');
-	liElement.innerText = author.bold();
-    liElement.
+
+    const emotionEl = document.createElement('div');
+    switch(emotion) {
+    case 'happy':
+        emotionEl.innerHTML = '&#128522; ';
+        break;
+    case 'laughting':
+        emotionEl.innerHTML =  '&#128516; ';
+        break;
+    case 'surprised':
+        emotionEl.innerHTML = '&#128562; ';
+        break;
+    case 'sad':
+        emotionEl.innerHTML = '&#128532; ';
+        break;
+    default:
+        emotionEl.innerHTML = '&#128522; ';
+    }
+
+
+    const bold = document.createElement('b');
+    bold.innerText = author;
+    emotionEl.appendChild(bold);
+    const linebreak = document.createElement('br');
+    liElement.appendChild(emotionEl);
+    liElement.appendChild(linebreak);
+    const dateNode = document.createElement('i');
+    dateNode.innerText = date;
+    liElement.appendChild(dateNode);
+    liElement.appendChild(linebreak);
+    const textNode = document.createTextNode(text);
+    liElement.appendChild(textNode);
+
 	return liElement;
 }

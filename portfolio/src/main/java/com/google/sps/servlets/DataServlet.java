@@ -58,19 +58,20 @@ public class DataServlet extends HttpServlet {
         PreparedQuery results = datastore.prepare(query);
 
         comments = new ArrayList<>();
-        String author, text;
+        String author, text, emotion;
         Date date;
         for (Entity entity : results.asIterable()) {
             try {
                 author = (String) entity.getProperty("author");
                 text = (String) entity.getProperty("text");
                 date = (Date) entity.getProperty("date");
+                emotion = (String) entity.getProperty("emotion");
             } catch (ClassCastException e) {
                 System.err.println("Could not cast entry property");
                 break;                
             }
 
-            Comment comment = new Comment(text, author, date);
+            Comment comment = new Comment(text, author, date, emotion);
             comments.add(comment);
 
             maxNumComments --; 
@@ -78,7 +79,7 @@ public class DataServlet extends HttpServlet {
         }
 
         Gson gson = new Gson();
-
+        
         response.setContentType("application/json;");
         response.getWriter().println(gson.toJson(comments));
     }
@@ -88,12 +89,14 @@ public class DataServlet extends HttpServlet {
         String author = getParameter(request, "author", "unknown");
         String text = getParameter(request, "text", "");
         String page = getParameter(request, "page", "unknown");
+        String emotion = getParameter(request, "emotion", "");
         Date date = new Date();
 
         Entity commentEntity = new Entity("Comment-" + page);
         commentEntity.setProperty("author", author);
         commentEntity.setProperty("text", text);
         commentEntity.setProperty("date", date);
+        commentEntity.setProperty("emotion", emotion);
 
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         datastore.put(commentEntity);
