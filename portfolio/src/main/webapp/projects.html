@@ -7,72 +7,82 @@
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
       <script src="script.js"></script>
    </head>
-   <body>
-       
-        <div id="navigation">
-            <ul>
-                <li id="icon">
-                    <div id="logo-image">
-                    <img src="images/icon-ani.jpg" width="50" height="50" href="index.html"/>
-                	</div></li>
-                <li id="name"><a href="index.html">Ani Machaidze</a>
-                <li><a href="interests.html">Interests</a></li>
-                <li><a href="projects.html">Projects</a></li>
-                <li><a href="career.html">Career</a></li>
-                <li><a href="index.html">About</a></li>
-            </ul>
-        </div>
+   <body onload="getComments()">
+      <div id="navigation">
+         <ul>
+            <li id="icon">
+               <div id="logo-image">
+                  <img src="images/icon-ani.jpg" width="50" height="50" href="index.html"/>
+               </div>
+            </li>
+            <li id="name"><a href="index.html">Ani Machaidze</a>
+            <li><a href="interests.html">Interests</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="career.html">Career</a></li>
+            <li><a href="index.html">About</a></li>
+         </ul>
+      </div>
 
       <div class="container">
-
-        <div class="page-title">
+         <div class="page-title">
             <h1>My Projects</h1>
-        </div> 
-
+         </div>
          <div class="title">
             <h2 class="section-title">Suchmaschine - Search Engine <i class="date"> 03/2020-05/2020</i></h2>
             <div class="project-div">
                <h4>CIS 455 Internet and Web Systems Final Project </h4>
                <h5>Collaborators: Michael Colombo, Hanbang Wang, Chris Williams</h5>
                <div class="project-description">
-                   <p>Suchmascine is a google-style search engine. The search engine has 5 major components.
-                       The Crawler, which crawles the web and puts crawled pages in the database; Pagerank Algorithm,
-                       which calculates pagerank for each crawled page; Indexer, which runs TF-IDF algorithm and calculates 
-                       vectors; User interface, which accept user query and gets pages based on the calculated rankings. 
-                   </p>
+                  <p>Suchmascine is a google-style search engine. The search engine has 5 major components.
+                     The Crawler, which crawles the web and puts crawled pages in the database; Pagerank Algorithm,
+                     which calculates pagerank for each crawled page; Indexer, which runs TF-IDF algorithm and calculates 
+                     vectors; User interface, which accept user query and gets pages based on the calculated rankings. 
+                  </p>
                </div>
                <div class="project-responsibility">
-                   <p>My contribution:</p>
-                    <ul>
-                        <li><p>Implemented Mercator-style distributed Web Crawler, which crawls ~3 pages/second.</p></li>
-                        <li><p>Parallelized the processes using Apache Spark.</p></li>
-                        <li><p>Contributed toward int egration of the project and summarizing in the paper.</p></li>
-                    </ul>
-                </div>
+                  <p>My contribution:</p>
+                  <ul>
+                     <li>
+                        <p>Implemented Mercator-style distributed Web Crawler, which crawls ~3 pages/second.</p>
+                     </li>
+                     <li>
+                        <p>Parallelized the processes using Apache Spark.</p>
+                     </li>
+                     <li>
+                        <p>Contributed toward int egration of the project and summarizing in the paper.</p>
+                     </li>
+                  </ul>
+               </div>
             </div>
          </div>
 
-        <div class="title">
+         <div class="title">
             <h2 class="section-title">PennPals <i class="date"> 10/2019- 11/2019</i></h2>
             <div class="project-div">
                <h4>CIS 350 Software Design Final Project</h4>
                <h5>Colaborators: Meri Kavtelishvili, Ayyah Alhuraibi, Derek He</h5>
-
-                <div class="project-description">
-
-                    <p>Collaborated with 3 Penn students to create PennPals, an Android and Web
-                        application that connects Penn Students ot future applicatis from
-                        underrepresented backgrouds to provide mentorship and guidance.</p>
-                </div>
-                <div class="project-responsibility">
-                    <p>My contribution:</p>
-                    <ul>
-                        <li><p>Created registration, profile creation, and authorization feature for users
-                            on mobile app.</p></li>
-                        <li><p>Implemented admin monitoring and user blocking/deactivating functions on web app.</p></li>
-                        <li><p>Integrated the web and mobile application with MongoDB database.</p></li>
-                    </ul>
-                </div>
+               <div class="project-description">
+                  <p>Collaborated with 3 Penn students to create PennPals, an Android and Web
+                     application that connects Penn Students ot future applicatis from
+                     underrepresented backgrouds to provide mentorship and guidance.
+                  </p>
+               </div>
+               <div class="project-responsibility">
+                  <p>My contribution:</p>
+                  <ul>
+                     <li>
+                        <p>Created registration, profile creation, and authorization feature for users
+                           on mobile app.
+                        </p>
+                     </li>
+                     <li>
+                        <p>Implemented admin monitoring and user blocking/deactivating functions on web app.</p>
+                     </li>
+                     <li>
+                        <p>Integrated the web and mobile application with MongoDB database.</p>
+                     </li>
+                  </ul>
+               </div>
             </div>
          </div>
 
@@ -80,36 +90,77 @@
             <h2 class="section-title">Covid-19 Spread Simulation <i class="date"> 05/2020</i></h2>
             <div class="project-div">
                <h4>NETS 150 Network and Social Systems Engineering Final Project</h4>
-                <h5>Collaborator: Meri Kavtelishvili</h5>
-                <div class="project-description">
-                    <p>In our project, we tried to model the spread of the virus using the SIR model.
-                        SIR model considers different parameters: graph structure (node isolations, community clusters),
-                        probability of infecting person infect its specific neighbour, number of iterations for which
-                        person stays infected. Based on these parameters, we modeled the problem and experimented to 
-                        prove our hypothesis about the virus. 
-                    </p>
-                <div class="project-responsibility">
-                    <p>My contribution:</p>
-                    <ul>
-                        <li><p>Implemented an application that generates graph based on several variables such as number of neighbours, probability for each of other nodes to be connected.</p></li>
-                        <li><p>Implemented an application that simulates spread of a virus.</p></li>
-                        <li><p>Created an empirical analysis based on different variables and observing spread simulation.</p></li>
-                    </ul>
-                </div>
+               <h5>Collaborator: Meri Kavtelishvili</h5>
+               <div class="project-description">
+                  <p>In our project, we tried to model the spread of the virus using the SIR model.
+                     SIR model considers different parameters: graph structure (node isolations, community clusters),
+                     probability of infecting person infect its specific neighbour, number of iterations for which
+                     person stays infected. Based on these parameters, we modeled the problem and experimented to 
+                     prove our hypothesis about the virus. 
+                  </p>
+                  <div class="project-responsibility">
+                     <p>My contribution:</p>
+                     <ul>
+                        <li>
+                           <p>Implemented an application that generates graph based on several variables such as number of neighbours, probability for each of other nodes to be connected.</p>
+                        </li>
+                        <li>
+                           <p>Implemented an application that simulates spread of a virus.</p>
+                        </li>
+                        <li>
+                           <p>Created an empirical analysis based on different variables and observing spread simulation.</p>
+                        </li>
+                     </ul>
+                  </div>
+               </div>
+            </div>
          </div>
 
+         <div id="comments">
+            <div id="comments-form">
+               <form action="/data" method="POST">
+                  <p>Add a comment:</p>
+                  <input type="text" name="author" id="author" placeholder="Your name..">
+                  <div id="horizontal-wrapper"> 
+                    <!-- TODO: change with different type of emoji --> 
+                    <select name="emotion" id="emotion">
+                        <option value="happy" class="fa-grin-stars">&#128522;</option>
+                        <option value="laughting" class="fas fa-laugh-beam">&#128516;</option>
+                        <option value="surprised" class="fas fa-surprise">&#128562;</option>
+                        <option value="sad" class="fas fa-frown">&#128532;</option>
+                    </select>
+                    <textarea type="text" name="text" id="text" placeholder="Your comment.."></textarea>
+                  </div>
+                  <input hidden name="page" value="projects.html" id="page">
+                  <br/>
+                  <input type="submit"/>
+               </form>
+            </div>
+            
+            <label for="comments-number">Comments&nbsp;&nbsp;</label>
+            <select name="comments-number" id="comments-number" onchange="getComments()">
+               <option value="5">5</option>
+               <option value="10">10</option>
+               <option value="15">15</option>
+               <option value="20">20</option>
+            </select>
+            <br>
+            <ul id="comments-container">
+            </ul>
+            <br>
+            <button onclick="deleteComments()" id="delete-comments">Delete all comments</button>
+         </div>
       </div>
 
-        <div id="footer">
-            <div id="footer-icons">
-                <a href="https://www.linkedin.com/in/ani-m" class="fa fa-linkedin"></a>
-                <a href="https://github.com/AniMachaidze" class="fa fa-github"></a>
-                <a href="mailto:animachaidze@gmail.com" class="fa fa-google"></a>
-                <a href="https://www.facebook.com/ani.machaidze4" class="fa fa-facebook"></a>
-                <a href="https://www.instagram.com/ani.machaidze/?hl=en" class="fa fa-instagram"></a>
-            </div>
-            <p id="footer-text">@Ani Machaidze, 2020</p>
-        </div>
-
+      <div id="footer">
+         <div id="footer-icons">
+            <a href="https://www.linkedin.com/in/ani-m" class="fa fa-linkedin"></a>
+            <a href="https://github.com/AniMachaidze" class="fa fa-github"></a>
+            <a href="mailto:animachaidze@gmail.com" class="fa fa-google"></a>
+            <a href="https://www.facebook.com/ani.machaidze4" class="fa fa-facebook"></a>
+            <a href="https://www.instagram.com/ani.machaidze/?hl=en" class="fa fa-instagram"></a>
+         </div>
+         <p id="footer-text">@Ani Machaidze, 2020</p>
+      </div>
    </body>
 </html>

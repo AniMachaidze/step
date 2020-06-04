@@ -6,151 +6,183 @@
       <link rel="stylesheet" href="style.css">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
       <script src="script.js"></script>
+      <script src='https://kit.fontawesome.com/015340ae6d.js'></script>
    </head>
-   <body>
+   <body onload="getComments()">
+      <div id="navigation">
+         <ul>
+            <li id="icon">
+               <div id="logo-image">
+                  <img src="images/icon-ani.jpg" width="50" height="50" href="index.html"/>
+               </div>
+            </li>
+            <li id="name"><a href="index.html">Ani Machaidze</a></li>
+            <li><a href="interests.html">Interests</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="career.html">Career</a></li>
+            <li><a href="index.html">About</a></li>
+         </ul>
+      </div>
+      <div class="container">
+         <div class="page-title">
+            <h1>My Career</h1>
+         </div>
 
-        <div id="navigation">
-            <ul>
-                <li id="icon">
-                    <div id="logo-image">
-                    <img src="images/icon-ani.jpg" width="50" height="50" href="index.html"/>
-                	</div></li>
-                <li id="name"><a href="index.html">Ani Machaidze</a>
-                <li><a href="interests.html">Interests</a></li>
-                <li><a href="projects.html">Projects</a></li>
-                <li><a href="career.html">Career</a></li>
-                <li><a href="index.html">About</a></li>
+         <div class="title">
+            <h2 class="section-title">Work Experience</h2>
+            <div class="work-div">
+               <h4>STEP Intern at Google</h4>
+               <p></p>
+            </div>
+
+            <div class="work-div">
+               <h4>Teaching Assistant at CIT 594 &nbsp;&nbsp;&nbsp; <i>Philadelphia,PA</i></h4>
+               <h5>University og Pennstlvania Engineering</h5>
+               <p>TA-ed a graduate level course CIT 594 - Data Structures and Software Design
+                  at University of Pennsylvania.<br>I was responsible for Holding recitations,
+                  weekly office hours and grading Homeworks.
+               </p>
+            </div>
+
+            <div class="work-div">
+               <h4>Residential Teaching Assistant</h4>
+               <h5>Engineering Summer Academy at Penn</h5>
+               <p>Assisted teaching 34 high school students a college-level course in Complex Networks<br>
+                  Presented crash course lectures in Python, graded homework and held office hours.<br>
+                  Collaborated with 4 other RTAs to organize study sessions and social activities for students.<br>
+                  Supported and supervised students in both academic and residenctial settings.
+               </p>
+            </div>
+
+            <div class="work-div">
+               <h4>Fife-Penn CS Academy Instuctor</h4>
+               <p>Taught 24 first and second grade students coding in Scratch.<br>
+                  Created and implemented game design lesson plans together with one other Penn student.
+               </p>
+            </div>
+
+            <div class="work-div">
+               <h4>Product Manager at EBG.GE</h4>
+               <p>Analyzed user performance using Google Analytics, designed new features to create a better user experience.<br>
+                  Managed company Facebook page. Ran ads on Facebook and Google AdWords.<br>
+                  Contributed to creating collaborative and fun company culture from startup stage.
+               </p>
+            </div>
+
+            <div class="work-div">
+               <h4>Team Mentro at Technovation Challenge</h4>
+               <p>Mentored 5-high-school girls participating in Technovation, a mobile app competition.<br>
+                  Taught coding and app design in MIT App Inventor and shared my business knowledge with them..<br>
+                  Worked with other georgian mentors to translate lessons from English to Georgian.
+               </p>
+            </div>
+         </div>
+         <div class="title">
+            <h2 class="section-title">Education</h2>
+            <div class="education-div">
+               <h4>University of Pennsylvania | 2018-2022</h4>
+               <h5>Bachelor of Science in Engineering, Computer Science</h5>
+               <p></p>
+               <p>Courses:</p>
+               <div id="courses">
+
+                  <!-- TODO: openable div with course laod discription-->
+                  <p>Internet and Web Systems - CIS 455</p>
+                  <p>Data Structures and Algorithms - CIS 121</p>
+                  <p>Software Design & Engineering - CIS 350</p>
+                  <p>Introduction to Computer Systems - CIS 240</p>
+                  <p>Mathematical Foundations of Computer Science - CIS 160</p>
+                  <p>Automata, Computability, and Complexity - CIS 262</p>
+               </div>
+            </div>
+            <div class="education-div">
+               <h4>Komarvi Public School | 2011-2017</h4>
+            </div>
+         </div>
+         <div class="title">
+            <h2 class="section-title">Acomplishments</h2>
+            <div class="accomplishment-div">
+               <h4>MIT LaunchX Summer Program 2017</h4>
+               <p>Gained the knowledge and skills of buisness and entrepreneurship<br>
+                  Worked with a team to build an MVP of book sharing platform and piloted the startup idea for a month.
+               </p>
+            </div>
+            <div class="accomplishment-div">
+               <h4> Junior Achievement Georgia</h4>
+               <p>Collaborated with a team of 10 to start a company with manufactures
+                  innovative handmade soaps with toys inside to attract childrean
+                  and promote healthy lifestyle<br>
+                  Pitched company idea to businessmen and celebrities in Georgia and
+                  5 of them became our shareholders<br>
+                  Sold over 300 soaps and won the Company of the Year award in Georgia,
+                  among 80 high-school teams
+               </p>
+            </div>
+         </div>
+         <div class="title">
+            <h2 class="section-title">Skills</h2>
+            <div class="work-div">
+               <p>Programming Languages and Skills:
+                  Java, C, C++, OCaml, HTML, CSS, JavaScript, Algorithms, Data Structures.
+               </p>
+               <p>Languages: English, Georgian, Russian</p>
+            </div>
+         </div>
+         <div class="title">
+            <h2 class="section-title">Clubs and Student Organizations</h2>
+            <div class="work-div">
+               <p>Moelis Acess Science (MAS)<br>
+                  Penn Women in Computer Science (WICS)<br>
+                  Society of Women Engineers (SWE)
+               </p>
+            </div>
+         </div>
+
+         <div id="comments">
+            <div id="comments-form">
+               <form action="/data" method="POST">
+                  <p>Add a comment:</p>
+                  <input type="text" name="author" id="author" placeholder="Your name..">
+                  <div id="horizontal-wrapper"> 
+                    <!-- TODO: change with different type of emoji --> 
+                    <select name="emotion" id="emotion">
+                        <option value="happy" class="fa-grin-stars">&#128522;</option>
+                        <option value="laughting" class="fas fa-laugh-beam">&#128516;</option>
+                        <option value="surprised" class="fas fa-surprise">&#128562;</option>
+                        <option value="sad" class="fas fa-frown">&#128532;</option>
+                    </select>
+                    <textarea type="text" name="text" id="text" placeholder="Your comment.."></textarea>
+                  </div>
+                  <input hidden name="page" value="career.html" id="page">
+                  <br/>
+                  <input type="submit"/>
+               </form>
+            </div>
+
+            <label for="comments-number">Comments&nbsp;&nbsp;</label>
+            <select name="comments-number" id="comments-number" onchange="getComments()">
+               <option value="5">5</option>
+               <option value="10">10</option>
+               <option value="15">15</option>
+               <option value="20">20</option>
+            </select>
+            <br>
+            <ul id="comments-container">
             </ul>
-        </div>
+            <br>
+            <button onclick="deleteComments()" id="delete-comments">Delete all comments</button>
+         </div>
+      </div>
 
-        <div class="container">
-
-            <div class="page-title">
-                <h1>My Career</h1>
-            </div>
-
-            <div class="title">
-                <h2>Work Experience</h2>
-
-                <div class="work-div">
-                    <h4>STEP Intern at Google</h4>
-                    <p></p>
-                </div>
-
-                <div class="work-div">
-                    <h4>Teaching Assistant at CIT 594 &nbsp;&nbsp;&nbsp; <i>Philadelphia,PA</i></h4>
-                    <h5>University og Pennstlvania Engineering</h5>
-                    <p>TA-ed a graduate level course CIT 594 - Data Structures and Software Design
-                            at University of Pennsylvania.<br>I was responsible for Holding recitations,
-                            weekly office hours and grading Homeworks.</p>
-                </div>
-
-                <div class="work-div">
-                    <h4>Residential Teaching Assistant</h4>
-                    <h5>Engineering Summer Academy at Penn</h5>
-                    <p>Assisted teaching 34 high school students a college-level course in Complex Networks<br>
-                            Presented crash course lectures in Python, graded homework and held office hours.<br>
-                            Collaborated with 4 other RTAs to organize study sessions and social activities for students.<br>
-                            Supported and supervised students in both academic and residenctial settings.</p>
-                </div>
-
-                <div class="work-div">
-                    <h4>Fife-Penn CS Academy Instuctor</h4>
-                    <p>Taught 24 first and second grade students coding in Scratch.<br>
-                            Created and implemented game design lesson plans together with one other Penn student.</p>
-                </div>
-
-                 <div class="work-div">
-                    <h4>Product Manager at EBG.GE</h4>
-                    <p>Analyzed user performance using Google Analytics, designed new features to create a better user experience.<br>
-                        Managed company Facebook page. Ran ads on Facebook and Google AdWords.<br>
-                        Contributed to creating collaborative and fun company culture from startup stage.</p>
-                </div>
-
-                <div class="work-div">
-                    <h4>Team Mentro at Technovation Challenge</h4>
-                    <p>Mentored 5-high-school girls participating in Technovation, a mobile app competition.<br>
-                        Taught coding and app design in MIT App Inventor and shared my business knowledge with them..<br>
-                        Worked with other georgian mentors to translate lessons from English to Georgian.</p>
-                </div>
-            </div>
-
-            <div class="title">
-                <h2>Education</h2>
-
-                <div class="education-div">
-                    <h4>University of Pennsylvania | 2018-2022</h4>
-                    <h5>Bachelor of Science in Engineering, Computer Science</h5>
-                    <p></p>
-
-                    <p>Courses:</p>
-                    <div id="courses">
-                        <!-- TODO: openable div with course laod discription-->
-                        <p>Internet and Web Systems - CIS 455</p>
-                        <p>Data Structures and Algorithms - CIS 121</p>
-                        <p>Software Design & Engineering - CIS 350</p>
-                        <p>Introduction to Computer Systems - CIS 240</p>
-                        <p>Mathematical Foundations of Computer Science - CIS 160</p>
-                        <p>Automata, Computability, and Complexity - CIS 262</p>
-                    </div>
-                </div>
-
-                <div class="education-div">
-                    <h4>Komarvi Public School | 2011-2017</h4>
-                </div>
-            </div>
-
-            <div class="title">
-                <h2>Acomplishments</h2>
-
-                <div class="accomplishment-div">
-                    <h4>MIT LaunchX Summer Program 2017</h4>
-                    <p>Gained the knowledge and skills of buisness and entrepreneurship<br>
-                        Worked with a team to build an MVP of book sharing platform and piloted the startup idea for a month.</p>
-                </div>
-
-                <div class="accomplishment-div">
-                    <h4> Junior Achievement Georgia</h4>
-                    <p>Collaborated with a team of 10 to start a company with manufactures
-                            innovative handmade soaps with toys inside to attract childrean
-                            and promote healthy lifestyle<br>
-                            Pitched company idea to businessmen and celebrities in Georgia and
-                            5 of them became our shareholders<br>
-                            Sold over 300 soaps and won the Company of the Year award in Georgia,
-                            among 80 high-school teams</p>
-                </div>
-            </div>
-
-            <div id="title">
-                <h2>Skills</h2>
-                <div class="work-div">
-                    <p>Programming Languages and Skills:
-                    Java, C, C++, OCaml, HTML, CSS, Algorithms, Data Structures.</p>
-                    <p>Languages: English, Georgian, Russian</p>
-                </div>
-            </div>
-
-            <div id="title">
-                <h2>Clubs and Student Organizations</h2>
-                <div class="work-div">
-                    <p>Moelis Acess Science (MAS)<br>
-                        Penn Women in Computer Science (WICS)<br>
-                        Society of Women Engineers (SWE)</p>
-                </div>
-            </div>
-         
-        </div>
-
-        <div id="footer">
-            <div id="footer-icons">
-                <a href="https://www.linkedin.com/in/ani-m" class="fa fa-linkedin"></a>
-                <a href="https://github.com/AniMachaidze" class="fa fa-github"></a>
-                <a href="mailto:animachaidze@gmail.com" class="fa fa-google"></a>
-                <a href="https://www.facebook.com/ani.machaidze4" class="fa fa-facebook"></a>
-                <a href="https://www.instagram.com/ani.machaidze/?hl=en" class="fa fa-instagram"></a>
-            </div>
-            <p id="footer-text">@Ani Machaidze, 2020</p>
-        </div>
-        
+      <div id="footer">
+         <div id="footer-icons">
+            <a href="https://www.linkedin.com/in/ani-m" class="fa fa-linkedin"></a>
+            <a href="https://github.com/AniMachaidze" class="fa fa-github"></a>
+            <a href="mailto:animachaidze@gmail.com" class="fa fa-google"></a>
+            <a href="https://www.facebook.com/ani.machaidze4" class="fa fa-facebook"></a>
+            <a href="https://www.instagram.com/ani.machaidze/?hl=en" class="fa fa-instagram"></a>
+         </div>
+         <p id="footer-text">@Ani Machaidze, 2020</p>
+      </div>
    </body>
 </html>

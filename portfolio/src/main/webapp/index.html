@@ -8,95 +8,65 @@
       <script src="script.js"></script>
    </head>
    <body>
+       
+      <div id="navigation">
+         <ul>
+            <li id="icon">
+               <div id="logo-image">
+                  <img src="images/icon-ani.jpg" width="50" height="50"/>
+               </div>
+            </li>
+            <li id="name"><a href="index.html">Ani Machaidze</a>
+            <li><a href="interests.html">Interests</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="career.html">Career</a></li>
+            <li><a href="index.html">About</a></li>
+         </ul>
+      </div>
 
-        <div id="navigation">
-            <ul>
-                <li id="icon">
-                    <div id="logo-image">
-                        <img src="images/icon-ani.jpg" width="50" height="50"/>
-                	</div>
-                </li>
-                <li id="name"><a href="index.html">Ani Machaidze</a>
-                <li><a href="interests.html">Interests</a></li>
-                <li><a href="projects.html">Projects</a></li>
-                <li><a href="career.html">Career</a></li>
-                <li><a href="index.html">About</a></li>
-            </ul>
-        </div>
+      <div class="container">
+      <div id="profile"> 
+         <img src="images/animachaidze.jpg" width="500"/>
+      </div>
+      <div id="content">
+         <h1 class="title">Ani Machaidze</h1>
+         <div class="text">
+            <p>Hello! My name is Ani Machaidze. I am a rising junior at the University of Pennsylvania. 
+               I sutdy at the School of Engineering and Applied Science, majoring in Computer Science. I am an aspiring Software Engineer. 
+               Currently, I am a STEP intern at Google.
+            </p>
+         </div>
+         <div class="text">
+            <p>My main occupation is related to Computer Science. I have worked on several <a href="projects.html">projects</a> for the past few years.
+               Additionally, I enjoy sharing my knowledge. I have tought and TAed several course in my <a href="career.html">career.</a>
+            </p>
+         </div>
 
-        <div class="container">
-
-            <div id="profile"> 
-                <img src="images/animachaidze.jpg" width="500"/>
+         <div class="text">
+            <p>I am <a href="interests.html">interested</a> in entrepreneurship and photography and also enjoy playing borad-games and ping-pong.</p>
+         </div>
+         <div id="contact">
+            <div class="text">
+               <p>Feel free to contact me!</p>
             </div>
+            <a href="https://www.linkedin.com/in/ani-m" class="fa fa-linkedin"></a>
+            <a href="https://github.com/AniMachaidze" class="fa fa-github"></a>
+            <a href="mailto:animachaidze@gmail.com" class="fa fa-google"></a>
+            <a href="https://www.facebook.com/ani.machaidze4" class="fa fa-facebook"></a>
+            <a href="https://www.instagram.com/ani.machaidze/?hl=en" class="fa fa-instagram"></a>
+         </div>
+      </div>
 
-            <div id="content">
-                <h1 class="title">Ani Machaidze</h1>
-                <div class="text">
-                    <p>Hello! My name is Ani Machaidze. I am a rising junior at the University of Pennsylvania. 
-                    I sutdy at the School of Engineering and Applied Science, majoring in Computer Science. I am an aspiring Software Engineer. 
-                    Currently, I am a STEP intern at Google.</p>
-                </div>
-
-                <div class="text">
-                    <p>My main occupation is related to Computer Science. I have worked on several <a href="projects.html">projects</a> for the past few years.
-                    Additionally, I enjoy sharing my knowledge. I have tought and TAed several course in my <a href="career.html">career.</a></p>
-                </div>
-
-                <div class="text">
-                    <p>I am <a href="interests.html">interested</a> in entrepreneurship and photography and also enjoy playing borad-games and ping-pong.</p>
-                </div>
-
-                <div id="contact">
-                    <div class="text">
-                        <p>Feel free to contact me!</p>
-                    </div>
-                    <a href="https://www.linkedin.com/in/ani-m" class="fa fa-linkedin"></a>
-                    <a href="https://github.com/AniMachaidze" class="fa fa-github"></a>
-                    <a href="mailto:animachaidze@gmail.com" class="fa fa-google"></a>
-                    <a href="https://www.facebook.com/ani.machaidze4" class="fa fa-facebook"></a>
-                    <a href="https://www.instagram.com/ani.machaidze/?hl=en" class="fa fa-instagram"></a>
-                </div>
-            </div>
-
-            <div id="comments-form"> 
-                <form action="/data" method="POST">
-                    <p>Enter your name:</p>
-                    <textarea name="author"></textarea>
-                    <br/>
-                    <p>Enter your comment:</p>
-                    <textarea name="text"></textarea>
-                    <br/>
-                <input type="submit"/>
-                </form>
-            </div> 
-            
-            <div id="comments">
-                <label for="comments-number">Choose number of comments</label>
-                    <select name="comments-number" id="comments-number" onchange="getComments()">
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="15">15</option>
-                        <option value="20">20</option>
-                    </select>
-                <br>
-                <button onclick="getComments()">See comments</button>
-            	<ul id="comments-container"></ul>
-                <br>
-                <button onclick="deleteComments()">Delete all comments</button>
-            </div>
-        </div>
-
-        <div id="footer">
-            <div id="footer-icons">
-                <a href="https://www.linkedin.com/in/ani-m" class="fa fa-linkedin"></a>
-                <a href="https://github.com/AniMachaidze" class="fa fa-github"></a>
-                <a href="mailto:animachaidze@gmail.com" class="fa fa-google"></a>
-                <a href="https://www.facebook.com/ani.machaidze4" class="fa fa-facebook"></a>
-                <a href="https://www.instagram.com/ani.machaidze/?hl=en" class="fa fa-instagram"></a>
-            </div>
-            <p id="footer-text">@Ani Machaidze, 2020</p>
-        </div>
+      <div id="footer">
+         <div id="footer-icons">
+            <a href="https://www.linkedin.com/in/ani-m" class="fa fa-linkedin"></a>
+            <a href="https://github.com/AniMachaidze" class="fa fa-github"></a>
+            <a href="mailto:animachaidze@gmail.com" class="fa fa-google"></a>
+            <a href="https://www.facebook.com/ani.machaidze4" class="fa fa-facebook"></a>
+            <a href="https://www.instagram.com/ani.machaidze/?hl=en" class="fa fa-instagram"></a>
+         </div>
+         <p id="footer-text">@Ani Machaidze, 2020</p>
+      </div>
 
    </body>
 </html>

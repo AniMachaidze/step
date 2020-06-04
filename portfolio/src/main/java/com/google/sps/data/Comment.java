@@ -7,11 +7,13 @@ public final class Comment {
     private final String content;
     private final String author;
     private final Date date;
+    private final String emotion;
 
-    public Comment(String content, String author, Date date) {
+    public Comment(String content, String author, Date date, String emotion) {
         this.content = content;
         this.author = author; 
         this.date = date;
+        this.emotion = emotion;
     }
 
     public String getContent() {
@@ -24,6 +26,10 @@ public final class Comment {
 
     public Date getDate() {
         return date;
+    }
+
+    public String getEmotion() {
+        return emotion;
     }
 
 }

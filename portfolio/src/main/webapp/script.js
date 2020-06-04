@@ -16,36 +16,74 @@
  * Fetches comments from the servers and adds them to the DOM.
  */
 function getComments() {
-    const numberEl = document.getElementById("comments-number");
-    const value = numberEl.options[numberEl.selectedIndex].value;
-    
-	fetch('/data' + '?comments-number=' + value).then(response => response.json()).then((comments) => {
+	const numberEl = document.getElementById("comments-number");
+	const value = numberEl.options[numberEl.selectedIndex].value;
+	const pageEl = document.getElementById("page");
+	const page = pageEl.value;
 
-		const commentListElement = document.getElementById('comments-container');
+	fetch('/data' + '?comments-number=' + value + '&page=' + page).then(response => response.json())
+		.then((comments) => {
+			const commentListElement = document.getElementById('comments-container');
 
-		commentListElement.innerHTML = '';
-        comments.forEach((comment) => {
-            commentListElement.appendChild(
-				createListElement('Date: ' + comment.date + ' Author: ' + comment.author + ' Comment: ' + comment.content));
-        })
-	});
+			commentListElement.innerHTML = '';
+			comments.forEach((comment) => {
+				let date = new Date(comment.date);
+				commentListElement.appendChild(
+					createListElement(comment.author, 
+						date.getMonth() + '/' + date.getDate() + '/' +
+						date.getFullYear(), comment.content, comment.emotion));
+			})
+	    });
 }
 
-
 /**
- * Fetches delete-data, deletes all commennts and then calls getComments to show empty comment list.
+ * Fetches delete-data, deletes all commennts
  */
 function deleteComments() {
-    fetch('/delete-data', {
-        method: 'POST'
-    });
+	const pageEl = document.getElementById("page");
+	const page = pageEl.value;
+	fetch('/delete-data?page=' + page, {
+		method: 'POST'
+	});
 
-    document.getElementById('comments-container').innerHTML = '';
+	document.getElementById('comments-container').innerHTML = '';
 }
 
 /** Creates an <li> element containing text. */
-function createListElement(text) {
+function createListElement(author, date, text, emotion) {
 	const liElement = document.createElement('li');
-	liElement.innerText = text;
+
+    const emotionEl = document.createElement('div');
+    switch(emotion) {
+    case 'happy':
+        emotionEl.innerHTML = '&#128522; ';
+        break;
+    case 'laughting':
+        emotionEl.innerHTML =  '&#128516; ';
+        break;
+    case 'surprised':
+        emotionEl.innerHTML = '&#128562; ';
+        break;
+    case 'sad':
+        emotionEl.innerHTML = '&#128532; ';
+        break;
+    default:
+        emotionEl.innerHTML = '&#128522; ';
+    }
+
+
+    const bold = document.createElement('b');
+    bold.innerText = author;
+    emotionEl.appendChild(bold);
+    const linebreak = document.createElement('br');
+    liElement.appendChild(emotionEl);
+    liElement.appendChild(linebreak);
+    const dateNode = document.createElement('i');
+    dateNode.innerText = date;
+    liElement.appendChild(dateNode);
+    liElement.appendChild(linebreak);
+    const textNode = document.createTextNode(text);
+    liElement.appendChild(textNode);
+
 	return liElement;
 }
