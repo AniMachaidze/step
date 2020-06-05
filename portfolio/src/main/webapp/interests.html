@@ -7,7 +7,7 @@
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
       <script src="script.js"></script>
    </head>
-   <body>
+   <body onload="getComments()">
       <div id="navigation">
          <ul>
             <li id="icon">
@@ -46,17 +46,15 @@
             </div>
          </div>
 
-         <!-- Fix the positioning for comment section --> 
          <div id="comments">
             <div id="comments-form">
                <form action="/data" method="POST">
                   <p>Add a comment:</p>
                   <input type="text" name="author" id="author" placeholder="Your name..">
                   <div id="horizontal-wrapper"> 
-                    <!-- TODO: change with different type of emoji --> 
                     <select name="emotion" id="emotion">
                         <option value="happy" class="fa-grin-stars">&#128522;</option>
-                        <option value="laughting" class="fas fa-laugh-beam">&#128516;</option>
+                        <option value="laughing" class="fas fa-laugh-beam">&#128516;</option>
                         <option value="surprised" class="fas fa-surprise">&#128562;</option>
                         <option value="sad" class="fas fa-frown">&#128532;</option>
                     </select>
@@ -67,7 +65,7 @@
                   <input type="submit"/>
                </form>
             </div>
-    
+            
             <label for="comments-number">Comments&nbsp;&nbsp;</label>
             <select name="comments-number" id="comments-number" onchange="getComments()">
                <option value="5">5</option>
