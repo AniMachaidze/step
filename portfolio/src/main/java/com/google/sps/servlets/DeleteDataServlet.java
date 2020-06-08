@@ -26,7 +26,8 @@ import javax.servlet.http.HttpServletResponse;
 public class DeleteDataServlet extends HttpServlet {
 
     @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
+    throws IOException {
         String page = request.getParameter("page");
         String text = request.getParameter("text");
         String author = request.getParameter("author");
@@ -35,18 +36,24 @@ public class DeleteDataServlet extends HttpServlet {
         Query query = new Query("Comment-" + page);
 
         if (!text.equals("undefined")) {
-            Filter textPropertyFilter = new FilterPredicate("text", FilterOperator.EQUAL, text);
-            Filter authorPropertyFilter = new FilterPredicate("author", FilterOperator.EQUAL, author);
-            Filter emotionPropertyFilter = new FilterPredicate("emotion", FilterOperator.EQUAL, emotion);
-            CompositeFilter filter =  CompositeFilterOperator.and(textPropertyFilter, authorPropertyFilter, emotionPropertyFilter);
+            Filter textPropertyFilter = new FilterPredicate("text",
+                FilterOperator.EQUAL, text);
+            Filter authorPropertyFilter = new FilterPredicate("author",
+                FilterOperator.EQUAL, author);
+            Filter emotionPropertyFilter = new FilterPredicate("emotion",
+                FilterOperator.EQUAL, emotion);
+            CompositeFilter filter = CompositeFilterOperator
+                .and(textPropertyFilter, authorPropertyFilter,
+                    emotionPropertyFilter);
             query.setFilter(filter);
-        } 
+        }
 
-        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        DatastoreService datastore = DatastoreServiceFactory
+            .getDatastoreService();
         PreparedQuery results = datastore.prepare(query);
 
-        List<Key> keys = new ArrayList<>();
-        for (Entity entity : results.asIterable()) {
+        List < Key > keys = new ArrayList < > ();
+        for (Entity entity: results.asIterable()) {
             keys.add(entity.getKey());
         }
 
