@@ -61,7 +61,7 @@ public class DataServlet extends HttpServlet {
             .getDatastoreService();
         PreparedQuery results = datastore.prepare(query);
 
-        comments = new ArrayList < > ();
+        comments = new ArrayList<> ();
         String author, text, emotion;
         Date date;
         for (Entity entity: results.asIterable()) {
@@ -75,8 +75,7 @@ public class DataServlet extends HttpServlet {
                 break;
             }
 
-            Comment comment = new Comment(text, author, date, emotion);
-            comments.add(comment);
+            comments.add(new Comment(text, author, date, emotion));
 
             maxNumComments--;
             if (maxNumComments <= 0) break;
