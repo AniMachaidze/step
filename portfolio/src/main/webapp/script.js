@@ -43,7 +43,7 @@ function getComments() {
  * Fetches delete-data, deletes all commennts
  */
 function deleteComments(author, date, text, emotion) {
-    // TODO: Delete comments with id instead of parameters
+	// TODO: Delete comments with id instead of parameters
 	const pageEl = document.getElementById("page");
 	const page = pageEl.value;
 	const queryStr = 'page=' + page + '&' +
@@ -70,7 +70,7 @@ function createListElement(userName, userEmail, date, text, emotion) {
 	const liElement = document.createElement('li');
 	const containerDiv = document.createElement('div');
 	const emotionEl = document.createElement('div');
-    
+
 	switch (emotion) {
 		case 'happy':
 			emotionEl.innerHTML = '&#128522; ';

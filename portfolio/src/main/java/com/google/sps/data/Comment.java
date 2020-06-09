@@ -12,7 +12,7 @@ public final class Comment {
 
     public Comment(String content, String userName, String userEmail, Date date, String emotion) {
         this.content = content;
-        this.userName = userName; 
+        this.userName = userName;
         this.userEmail = userEmail;
         this.date = date;
         this.emotion = emotion;
@@ -22,7 +22,7 @@ public final class Comment {
         return content;
     }
 
-	public String getUserName() {
+    public String getUserName() {
         return userName;
     }
 
