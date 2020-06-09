@@ -9,13 +9,16 @@ public final class Comment {
     private final String userEmail;
     private final Date date;
     private final String emotion;
+    private final boolean isAbleToDelete;
 
-    public Comment(String content, String userName, String userEmail, Date date, String emotion) {
+    public Comment(String content, String userName, String userEmail,
+        Date date, String emotion, boolean isAbleToDelete) {
         this.content = content;
         this.userName = userName;
         this.userEmail = userEmail;
         this.date = date;
         this.emotion = emotion;
+        this.isAbleToDelete = isAbleToDelete;
     }
 
     public String getContent() {
@@ -36,6 +39,10 @@ public final class Comment {
 
     public String getEmotion() {
         return emotion;
+    }
+
+    public boolean getIseAbleToDelete() {
+        return isAbleToDelete;
     }
 
 }

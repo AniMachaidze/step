@@ -30,6 +30,9 @@ public class UserServlet extends HttpServlet {
             json += ", ";
             json += "\"logoutUrl\": ";
             json += "\"" + logoutUrl + "\"";
+            json += ", ";
+            json += "\"email\": ";
+            json += "\"" + userEmail + "\"";
             json += "}";
 
             response.getWriter().println(json);

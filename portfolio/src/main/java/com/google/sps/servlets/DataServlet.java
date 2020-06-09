@@ -57,6 +57,12 @@ public class DataServlet extends HttpServlet {
 
         String page = request.getParameter("page");
 
+        String currentUserEmail = null;
+        UserService userService = UserServiceFactory.getUserService();
+        if (userService.getCurrentUser() != null) {
+            currentUserEmail = userService.getCurrentUser().getEmail();
+        }
+
         Query query = new Query("Comment-" + page)
             .addSort("date", SortDirection.DESCENDING);
         DatastoreService datastore = DatastoreServiceFactory
@@ -66,6 +72,7 @@ public class DataServlet extends HttpServlet {
         comments = new ArrayList<>();
         String userName, userEmail, text, emotion;
         Date date;
+        boolean isAbleToDelete = false;
         for (Entity entity: results.asIterable()) {
             try {
                 userName = (String) entity.getProperty("userName");
@@ -73,12 +80,18 @@ public class DataServlet extends HttpServlet {
                 text = (String) entity.getProperty("text");
                 date = (Date) entity.getProperty("date");
                 emotion = (String) entity.getProperty("emotion");
+                if (currentUserEmail != null && userEmail.equals(currentUserEmail)) {
+                    isAbleToDelete = true;
+                } else {
+                    isAbleToDelete = false;
+                }
             } catch (ClassCastException e) {
                 System.err.println("Could not cast entry property");
                 break;
             }
 
-            comments.add(new Comment(text, userName, userEmail, date, emotion));
+            comments.add(new Comment(text, userName, userEmail, date,
+                emotion, isAbleToDelete));
             maxNumComments--;
             if (maxNumComments <= 0) break;
         }
@@ -126,5 +139,4 @@ public class DataServlet extends HttpServlet {
         }
         return value;
     }
-
 }
