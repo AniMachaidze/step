@@ -63,6 +63,7 @@ public class DataServlet extends HttpServlet {
             .getDatastoreService();
         PreparedQuery results = datastore.prepare(query);
 
+
         comments = new ArrayList<>();
         String userName, userEmail, text, emotion;
         Date date;
@@ -78,10 +79,7 @@ public class DataServlet extends HttpServlet {
                 break;
             }
 
-            Comment comment = new Comment(text, userName, userEmail, date,
-                emotion);
-            comments.add(comment);
-
+            comments.add(new Comment(text, userName, userEmail, date, emotion));
             maxNumComments--;
             if (maxNumComments <= 0) break;
         }
