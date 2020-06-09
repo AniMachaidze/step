@@ -28,7 +28,7 @@ public class DeleteDataServlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
     throws IOException {
-        // TODO: Delete comments with id instead of parameters
+        // TODO: delete comment using unique ID instead of parameters
         String page = request.getParameter("page");
         String text = request.getParameter("text");
         String author = request.getParameter("author");
@@ -53,7 +53,8 @@ public class DeleteDataServlet extends HttpServlet {
             .getDatastoreService();
         PreparedQuery results = datastore.prepare(query);
 
-        List<Key> keys = new ArrayList<> ();
+
+        List<Key> keys = new ArrayList<>();
         for (Entity entity: results.asIterable()) {
             keys.add(entity.getKey());
         }
