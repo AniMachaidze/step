@@ -118,7 +118,7 @@ function createListElement(userName, userEmail, date, text, emotion) {
  * Checks if the user is logged in and shows comment submission form.
  */
 function checkLogin() {
-    var page = window.location.pathname;
+	var page = window.location.pathname;
 	const queryStr = 'page=' + page;
 	fetch('/user?' + queryStr).
 	then(response => response.json())
@@ -133,7 +133,7 @@ function checkLogin() {
 				userLogoutForm.style.display = 'block';
 				const userLogoutButton = document.getElementById('logout-button');
 				userLogoutButton.href = user.logoutUrl;
-            } 
+			}
 		});
 }
 
@@ -141,14 +141,14 @@ function checkLogin() {
  * Redirects to the login page when the button is clicked
  */
 function login() {
-    var page = window.location.pathname;
+	var page = window.location.pathname;
 	const queryStr = 'page=' + page;
 	fetch('/user?' + queryStr).
 	then(response => response.json())
 		.then((user) => {
 			if (user.loggedin === 'false') {
-                window.location.href = user.loginUrl;
-            }
+				window.location.href = user.loginUrl;
+			}
 		});
 }
 
@@ -157,5 +157,5 @@ function login() {
  */
 function start() {
 	getComments();
-    checkLogin();
+	checkLogin();
 }

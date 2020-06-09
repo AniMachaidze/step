@@ -35,7 +35,7 @@ import com.google.appengine.api.users.UserServiceFactory;
 
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-    
+
     private List<Comment> comments;
     static final int DEFAULT_COMMENTS_NUMBER = 5;
 
