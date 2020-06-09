@@ -117,9 +117,8 @@ function createListElement(userName, userEmail, date, text, emotion) {
 /** 
  * Checks if the user is logged in and shows comment submission form.
  */
-function checklogin() {
-	const pageEl = document.getElementById("page");
-	const page = pageEl.value;
+function checkLogin() {
+	var page = window.location.pathname;
 	const queryStr = 'page=' + page;
 	fetch('/user?' + queryStr).
 	then(response => response.json())
@@ -132,8 +131,23 @@ function checklogin() {
 
 				const userLogoutForm = document.getElementById('user-logout');
 				userLogoutForm.style.display = 'block';
-				const userLogoutLink = document.getElementById('user-logout-link');
-				userLogoutLink.href = user.logoutUrl;
+				const userLogoutButton = document.getElementById('logout-button');
+				userLogoutButton.href = user.logoutUrl;
+			}
+		});
+}
+
+/** 
+ * Redirects to the login page when the button is clicked
+ */
+function login() {
+	var page = window.location.pathname;
+	const queryStr = 'page=' + page;
+	fetch('/user?' + queryStr).
+	then(response => response.json())
+		.then((user) => {
+			if (user.loggedin === 'false') {
+				window.location.href = user.loginUrl;
 			}
 		});
 }
@@ -143,5 +157,5 @@ function checklogin() {
  */
 function start() {
 	getComments();
-	checklogin();
+	checkLogin();
 }
