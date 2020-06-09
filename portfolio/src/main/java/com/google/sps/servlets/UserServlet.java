@@ -17,14 +17,12 @@ public class UserServlet extends HttpServlet {
         String page = request.getParameter("page");
 
         UserService userService = UserServiceFactory.getUserService();
+        response.setContentType("application/json;");
 
         if (userService.isUserLoggedIn()) {
             String userEmail = userService.getCurrentUser().getEmail();
-            // TODO: change hardcoded redirection link to a variable
-            String urlToRedirectToAfterUserLogsOut = "/career.html";
+            String urlToRedirectToAfterUserLogsOut = page;
             String logoutUrl = userService.createLogoutURL(urlToRedirectToAfterUserLogsOut);
-
-            response.setContentType("application/json;");
 
             String json = "{";
             json += "\"loggedin\": ";
@@ -36,11 +34,18 @@ public class UserServlet extends HttpServlet {
 
             response.getWriter().println(json);
         } else {
-            // TODO: change hardcoded redirection link to a variable
-            String urlToRedirectToAfterUserLogsIn = "/career.html";
+            String urlToRedirectToAfterUserLogsIn = page;
             String loginUrl = userService.createLoginURL(urlToRedirectToAfterUserLogsIn);
 
-            response.sendRedirect(loginUrl);
+            String json = "{";
+            json += "\"loggedin\": ";
+            json += "\"false\"";
+            json += ", ";
+            json += "\"loginUrl\": ";
+            json += "\"" + loginUrl + "\"";
+            json += "}";
+
+            response.getWriter().println(json);
         }
     }
 }
