@@ -7,7 +7,7 @@
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
       <script src="script.js"></script>
    </head>
-   <body onload="getComments()">
+   <body onload="start()">
       <div id="navigation">
          <ul>
             <li id="icon">
@@ -155,6 +155,15 @@
                </form>
             </div>
 
+            <!-- TODO: edit style for user-login and user-logout divs -->
+            <div id="user-login"> 
+                <p>To add a comment <a href="/user" onclick="checklogin()">Log in</a></p>
+            </div>
+
+            <div id="user-logout"> 
+                <a id="user-logout-link" href="">Log out</a>
+            </div>
+
             <label for="comments-number">Comments&nbsp;&nbsp;</label>
             <select name="comments-number" id="comments-number" onchange="getComments()">
                <option value="5">5</option>
@@ -178,7 +187,7 @@
             <a href="https://www.facebook.com/ani.machaidze4" class="fa fa-facebook"></a>
             <a href="https://www.instagram.com/ani.machaidze/?hl=en" class="fa fa-instagram"></a>
          </div>
-         <p id="footer-text">@Ani Machaidze, 2020</p>
+         <p id="footer-text">&copy;Ani Machaidze, 2020</p>
       </div>
    </body>
 </html>

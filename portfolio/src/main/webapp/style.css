@@ -396,3 +396,15 @@ input[type=submit],
 	width: 100%;
 	overflow: hidden;
 }
+
+#comments-form {
+    display: none;
+}
+
+#user-login {
+    display: inline;
+}
+
+#user-logout {
+    display: none;
+}
