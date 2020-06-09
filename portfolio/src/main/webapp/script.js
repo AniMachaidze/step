@@ -131,8 +131,8 @@ function checkLogin() {
 
 				const userLogoutForm = document.getElementById('user-logout');
 				userLogoutForm.style.display = 'block';
-				const userLogoutLink = document.getElementById('user-logout-link');
-				userLogoutLink.href = user.logoutUrl;
+				const userLogoutButton = document.getElementById('logout-button');
+				userLogoutButton.href = user.logoutUrl;
             } 
 		});
 }

@@ -402,9 +402,35 @@ input[type=submit],
 }
 
 #user-login {
-    display: inline;
+    display: block;
 }
 
 #user-logout {
     display: none;
+}
+
+#login-button {
+    height: 46px;
+	background-color: #f3b5a7;
+	color: white;
+	padding: 14px 20px;
+	margin: 8px 0;
+	border: 1px solid #f5b3a5;
+	border-radius: 4px;
+	cursor: pointer;
+    font-size: 15px;
+}
+
+#logout-button {
+    float: right;
+    height: 28px;   
+	background-color: #f3b5a7;
+	color: white;
+	padding: 8px 20px;
+	margin: 8px 0;
+	border: 1px solid #f5b3a5;
+	border-radius: 4px;
+	cursor: pointer;
+    text-decoration: none;
+    font-size: 15px;
 }
