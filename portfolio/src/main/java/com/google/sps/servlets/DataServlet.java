@@ -78,7 +78,7 @@ public class DataServlet extends HttpServlet {
                 break;
             }
 
-            comments.add(new Comment(text, serName, userEmail, date, emotion));
+            comments.add(new Comment(text, userName, userEmail, date, emotion));
             maxNumComments--;
             if (maxNumComments <= 0) break;
         }

@@ -20,7 +20,7 @@ public class UserServlet extends HttpServlet {
 
         if (userService.isUserLoggedIn()) {
             String userEmail = userService.getCurrentUser().getEmail();
-            //TODO: change hardcoded redirection link to a variable
+            // TODO: change hardcoded redirection link to a variable
             String urlToRedirectToAfterUserLogsOut = "/career.html";
             String logoutUrl = userService.createLogoutURL(urlToRedirectToAfterUserLogsOut);
 
@@ -28,7 +28,7 @@ public class UserServlet extends HttpServlet {
 
             String json = "{";
             json += "\"loggedin\": ";
-            json += "\"" + true + "\"";
+            json += "\"true\"";
             json += ", ";
             json += "\"logoutUrl\": ";
             json += "\"" + logoutUrl + "\"";
@@ -36,7 +36,7 @@ public class UserServlet extends HttpServlet {
 
             response.getWriter().println(json);
         } else {
-            //TODO: change hardcoded redirection link to a variable
+            // TODO: change hardcoded redirection link to a variable
             String urlToRedirectToAfterUserLogsIn = "/career.html";
             String loginUrl = userService.createLoginURL(urlToRedirectToAfterUserLogsIn);
 

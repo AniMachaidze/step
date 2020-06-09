@@ -68,10 +68,9 @@ function deleteComments(author, date, text, emotion) {
  */
 function createListElement(userName, userEmail, date, text, emotion) {
 	const liElement = document.createElement('li');
-
 	const containerDiv = document.createElement('div');
-
 	const emotionEl = document.createElement('div');
+    
 	switch (emotion) {
 		case 'happy':
 			emotionEl.innerHTML = '&#128522; ';
@@ -125,7 +124,7 @@ function checklogin() {
 	fetch('/user?' + queryStr).
 	then(response => response.json())
 		.then((user) => {
-			if (user.loggedin) {
+			if (user.loggedin === 'true') {
 				const commentsForm = document.getElementById('comments-form');
 				commentsForm.style.display = 'block';
 				const userLoginForm = document.getElementById('user-login');
