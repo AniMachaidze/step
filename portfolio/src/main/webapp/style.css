@@ -22,7 +22,6 @@ body {
 	color: #f0a493;
 }
 
-
 /* Horizontal alignment for picture and text on the front page */
 
 #content {
@@ -43,13 +42,11 @@ body {
 	margin-left: auto;
 }
 
-
 /* page title styles */
 
 .title {
 	color: rgb(49, 49, 49);
 }
-
 
 /* styles for divs for text on pages */
 
@@ -60,8 +57,8 @@ body {
 .interest-div {
 	padding-left: 15px;
 	display: block;
+	overflow: hidden;
 }
-
 
 /* Navigation menu style */
 
@@ -123,7 +120,6 @@ div.text {
 	color: rgb(63, 63, 63);
 }
 
-
 /* Social media icon styles */
 
 .fa {
@@ -165,7 +161,6 @@ div.text {
 	color: white;
 }
 
-
 /* Styling footer */
 
 #footer {
@@ -180,7 +175,6 @@ div.text {
 	text-align: center;
 	text-decoration: white;
 }
-
 
 /* Postion of picture and text on interests page */
 
@@ -277,7 +271,8 @@ div.text {
 	background-color: #f2f2f2;
 	padding: 25px;
 	font-family: Impact, Charcoal, sans-serif;
-	color: #444343
+	color: #444343;
+	display: block;
 }
 
 input[type=text] {
@@ -292,40 +287,42 @@ input[type=text] {
 }
 
 #horizontal-wrapper {
-    width: 100%;
-    position: relative;
-    float: left;
+	width: 100%;
+	position: relative;
+	float: left;
 }
 
 #emotion {
 	border-radius: 4px;
-    height: 80px;
-    margin-top: 8px;
-    margin-bottom: 8px;
-    margin-right: 16px;
+	height: 80px;
+	width: 8%;
+	margin-top: 8px;
+	margin-bottom: 8px;
+	margin-right: 16px;
 	padding: 20px;
 	font-family: Impact, Charcoal, sans-serif;
-    font-size: 25px;
+	font-size: 25px;
 	border: 1px solid #ccc;
 	background-color: white;
-    position: relative;
-    float: left;
+	position: relative;
+	float: left;
 }
 
 textarea[type=text] {
-    width: 994px;
+	min-width: 90.5%;
+	max-width: 90.5%;
 	height: 80px;
 	padding: 12px 20px;
 	margin: 8px 0;
 	display: block;
 	border: 1px solid #ccc;
-    background-color: white;
+	background-color: white;
 	border-radius: 4px;
 	box-sizing: border-box;
 	font-family: Impact, Charcoal, sans-serif;
-    overflow: hidden;
-    position: relative;
-    float: left;
+	overflow: hidden;
+	position: relative;
+	float: left;
 }
 
 input[type=submit],
@@ -354,15 +351,16 @@ input[type=submit],
 #comments-container {
 	list-style-type: none;
 	margin: 0;
-	padding: 0
+	padding: 0;
 }
 
 #comments-container li {
-	margin: 5px;
+	margin-bottom: 5px;
+	margin-top: 5px;
 	width: 100%;
 	font-family: Impact, Charcoal, sans-serif;
 	font-size: 18px;
-    line-height: 1.8;
+	line-height: 1.8;
 	color: rgb(90, 90, 90);
 	padding: 12px 20px;
 	display: inline-block;
@@ -373,15 +371,28 @@ input[type=submit],
 }
 
 .fas {
-    font-weight: normal;
-    font-style: normal;
-    font-size: 24px;
-    line-height: 1;
-    letter-spacing: normal;
-    text-transform: none;
-    display: inline-block;
-    white-space: nowrap;
-    word-wrap: normal;
-    direction: ltr;
+	font-weight: normal;
+	font-style: normal;
+	font-size: 24px;
+	line-height: 1;
+	letter-spacing: normal;
+	text-transform: none;
+	display: inline-block;
+	white-space: nowrap;
+	word-wrap: normal;
+	direction: ltr;
 }
 
+.delete-button {
+	background-color: white;
+	border-radius: px;
+	border: 1px solid #ccc;
+	color: rgb(90, 90, 90);
+	font: 10px;
+	float: right;
+}
+
+.comment-containder {
+	width: 100%;
+	overflow: hidden;
+}

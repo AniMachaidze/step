@@ -29,16 +29,17 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
-import com.google.gson.Gson; 
+import com.google.gson.Gson;
 
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
-	private List<Comment> comments;
+    private List<Comment> comments;
     static final int DEFAULT_COMMENTS_NUMBER = 5;
 
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+    throws IOException {
         int maxNumComments = 0;
         String maxNumCommentsStr = request.getParameter("comments-number");
         if (maxNumCommentsStr.isEmpty()) {
@@ -47,20 +48,23 @@ public class DataServlet extends HttpServlet {
             try {
                 maxNumComments = Integer.parseInt(maxNumCommentsStr);
             } catch (NumberFormatException e) {
-                System.err.println("Could not convert to int: " + maxNumCommentsStr);
+                System.err.println("Could not convert to int: " +
+                    maxNumCommentsStr);
             }
         }
 
         String page = request.getParameter("page");
 
-        Query query = new Query("Comment-" + page).addSort("date", SortDirection.DESCENDING);
-        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        Query query = new Query("Comment-" + page)
+            .addSort("date", SortDirection.DESCENDING);
+        DatastoreService datastore = DatastoreServiceFactory
+            .getDatastoreService();
         PreparedQuery results = datastore.prepare(query);
 
-        comments = new ArrayList<>();
+        comments = new ArrayList < > ();
         String author, text, emotion;
         Date date;
-        for (Entity entity : results.asIterable()) {
+        for (Entity entity: results.asIterable()) {
             try {
                 author = (String) entity.getProperty("author");
                 text = (String) entity.getProperty("text");
@@ -68,24 +72,25 @@ public class DataServlet extends HttpServlet {
                 emotion = (String) entity.getProperty("emotion");
             } catch (ClassCastException e) {
                 System.err.println("Could not cast entry property");
-                break;                
+                break;
             }
 
             Comment comment = new Comment(text, author, date, emotion);
             comments.add(comment);
 
-            maxNumComments --; 
+            maxNumComments--;
             if (maxNumComments <= 0) break;
         }
 
         Gson gson = new Gson();
-        
+
         response.setContentType("application/json;");
         response.getWriter().println(gson.toJson(comments));
     }
 
     @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
+    throws IOException {
         String author = getParameter(request, "author", "unknown");
         String text = getParameter(request, "text", "");
         String page = getParameter(request, "page", "unknown");
@@ -98,16 +103,18 @@ public class DataServlet extends HttpServlet {
         commentEntity.setProperty("date", date);
         commentEntity.setProperty("emotion", emotion);
 
-        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        DatastoreService datastore = DatastoreServiceFactory
+            .getDatastoreService();
         datastore.put(commentEntity);
 
         response.sendRedirect(page);
     }
 
     /**
-    * Gets parameter from the list and changes the value by default if empty
-    */
-    private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+     * Gets parameter from the list and changes the value by default if empty
+     */
+    private String getParameter(HttpServletRequest request, String name,
+        String defaultValue) {
         String value = request.getParameter(name);
         if (value == null) {
             return defaultValue;

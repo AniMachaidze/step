@@ -16,74 +16,96 @@
  * Fetches comments from the servers and adds them to the DOM.
  */
 function getComments() {
-	const numberEl = document.getElementById("comments-number");
-	const value = numberEl.options[numberEl.selectedIndex].value;
-	const pageEl = document.getElementById("page");
-	const page = pageEl.value;
+    const numberEl = document.getElementById("comments-number");
+    const value = numberEl.options[numberEl.selectedIndex].value;
+    const pageEl = document.getElementById("page");
+    const page = pageEl.value;
 
-	fetch('/data' + '?comments-number=' + value + '&page=' + page).then(response => response.json())
-		.then((comments) => {
-			const commentListElement = document.getElementById('comments-container');
+    fetch('/data' + '?comments-number=' + value + '&page=' + page).
+    then(response => response.json())
+        .then((comments) => {
+            const commentListElement = document
+                .getElementById('comments-container');
 
-			commentListElement.innerHTML = '';
-			comments.forEach((comment) => {
-				let date = new Date(comment.date);
-				commentListElement.appendChild(
-					createListElement(comment.author, 
-						date.getMonth() + '/' + date.getDate() + '/' +
-						date.getFullYear(), comment.content, comment.emotion));
-			})
-	    });
+            commentListElement.innerHTML = '';
+            comments.forEach((comment) => {
+                let date = new Date(comment.date);
+                commentListElement.appendChild(
+                    createListElement(comment.author,
+                        date.getMonth() + '/' + date.getDate() + '/' +
+                        date.getFullYear(), comment.content, comment.emotion));
+            })
+        });
 }
 
 /**
  * Fetches delete-data, deletes all commennts
  */
-function deleteComments() {
-	const pageEl = document.getElementById("page");
-	const page = pageEl.value;
-	fetch('/delete-data?page=' + page, {
-		method: 'POST'
-	});
+function deleteComments(author, date, text, emotion) {
+    const pageEl = document.getElementById("page");
+    const page = pageEl.value;
+    const queryStr = 'page=' + page + '&' +
+        'author=' + author + '&' +
+        'date=' + date + '&' +
+        'text=' + text + '&' +
+        'emotion=' + emotion;
+    fetch('/delete-data?' + queryStr, {
+        method: 'POST',
+    });
 
-	document.getElementById('comments-container').innerHTML = '';
-}
-
-/** Creates an <li> element containing text. */
-function createListElement(author, date, text, emotion) {
-	const liElement = document.createElement('li');
-
-    const emotionEl = document.createElement('div');
-    switch(emotion) {
-    case 'happy':
-        emotionEl.innerHTML = '&#128522; ';
-        break;
-    case 'laughting':
-        emotionEl.innerHTML =  '&#128516; ';
-        break;
-    case 'surprised':
-        emotionEl.innerHTML = '&#128562; ';
-        break;
-    case 'sad':
-        emotionEl.innerHTML = '&#128532; ';
-        break;
-    default:
-        emotionEl.innerHTML = '&#128522; ';
+    if (!text) {
+        document.getElementById('comments-container').innerHTML = '';
+    } else {
+        getComments();
     }
 
+}
 
-    const bold = document.createElement('b');
-    bold.innerText = author;
-    emotionEl.appendChild(bold);
-    const linebreak = document.createElement('br');
-    liElement.appendChild(emotionEl);
-    liElement.appendChild(linebreak);
+/** 
+ * Creates an <li> element containing author, date, comment and emotion emoji.
+ */
+function createListElement(author, date, text, emotion) {
+    const liElement = document.createElement('li');
+
+    const containerDiv = document.createElement('div');
+
+    const emotionEl = document.createElement('div');
+    switch (emotion) {
+        case 'happy':
+            emotionEl.innerHTML = '&#128522; ';
+            break;
+        case 'laughing':
+            emotionEl.innerHTML = '&#128516; ';
+            break;
+        case 'surprised':
+            emotionEl.innerHTML = '&#128562; ';
+            break;
+        case 'sad':
+            emotionEl.innerHTML = '&#128532; ';
+            break;
+        default:
+            emotionEl.innerHTML = '&#128522; ';
+    }
+
+    const deleteButton = document.createElement('button');
+    deleteButton.innerHTML = '&#10005;';
+    deleteButton.className = "delete-button";
+    deleteButton.onclick = function() {
+        deleteComments(author, date, text, emotion);
+    }
+
+    containerDiv.className = 'comment-container';
+    containerDiv.appendChild(emotionEl);
+    const authorText = document.createElement('b');
+    authorText.innerText = author;
+    emotionEl.appendChild(authorText);
+    emotionEl.appendChild(deleteButton);
     const dateNode = document.createElement('i');
     dateNode.innerText = date;
-    liElement.appendChild(dateNode);
-    liElement.appendChild(linebreak);
+    containerDiv.appendChild(dateNode);
+    liElement.appendChild(containerDiv);
     const textNode = document.createTextNode(text);
     liElement.appendChild(textNode);
 
-	return liElement;
+    return liElement;
 }
