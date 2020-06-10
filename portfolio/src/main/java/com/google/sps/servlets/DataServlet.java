@@ -30,6 +30,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
 import com.google.gson.Gson;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
@@ -55,29 +57,41 @@ public class DataServlet extends HttpServlet {
 
         String page = request.getParameter("page");
 
+        String currentUserEmail = null;
+        UserService userService = UserServiceFactory.getUserService();
+        if (userService.getCurrentUser() != null) {
+            currentUserEmail = userService.getCurrentUser().getEmail();
+        }
+
         Query query = new Query("Comment-" + page)
             .addSort("date", SortDirection.DESCENDING);
         DatastoreService datastore = DatastoreServiceFactory
             .getDatastoreService();
         PreparedQuery results = datastore.prepare(query);
 
-        comments = new ArrayList < > ();
-        String author, text, emotion;
+        comments = new ArrayList<>();
+        String userName, userEmail, text, emotion;
         Date date;
+        boolean isAbleToDelete = false;
         for (Entity entity: results.asIterable()) {
             try {
-                author = (String) entity.getProperty("author");
+                userName = (String) entity.getProperty("userName");
+                userEmail = (String) entity.getProperty("userEmail");
                 text = (String) entity.getProperty("text");
                 date = (Date) entity.getProperty("date");
                 emotion = (String) entity.getProperty("emotion");
+                if (currentUserEmail != null && userEmail.equals(currentUserEmail)) {
+                    isAbleToDelete = true;
+                } else {
+                    isAbleToDelete = false;
+                }
             } catch (ClassCastException e) {
                 System.err.println("Could not cast entry property");
                 break;
             }
 
-            Comment comment = new Comment(text, author, date, emotion);
-            comments.add(comment);
-
+            comments.add(new Comment(text, userName, userEmail, date,
+                emotion, isAbleToDelete));
             maxNumComments--;
             if (maxNumComments <= 0) break;
         }
@@ -91,14 +105,18 @@ public class DataServlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
     throws IOException {
-        String author = getParameter(request, "author", "unknown");
+        String userName = getParameter(request, "author", "unknown");
         String text = getParameter(request, "text", "");
         String page = getParameter(request, "page", "unknown");
         String emotion = getParameter(request, "emotion", "");
         Date date = new Date();
 
+        UserService userService = UserServiceFactory.getUserService();
+        String userEmail = userService.getCurrentUser().getEmail();
+
         Entity commentEntity = new Entity("Comment-" + page);
-        commentEntity.setProperty("author", author);
+        commentEntity.setProperty("userEmail", userEmail);
+        commentEntity.setProperty("userName", userName);
         commentEntity.setProperty("text", text);
         commentEntity.setProperty("date", date);
         commentEntity.setProperty("emotion", emotion);
@@ -121,5 +139,4 @@ public class DataServlet extends HttpServlet {
         }
         return value;
     }
-
 }

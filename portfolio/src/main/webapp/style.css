@@ -22,6 +22,7 @@ body {
 	color: #f0a493;
 }
 
+
 /* Horizontal alignment for picture and text on the front page */
 
 #content {
@@ -42,11 +43,13 @@ body {
 	margin-left: auto;
 }
 
+
 /* page title styles */
 
 .title {
 	color: rgb(49, 49, 49);
 }
+
 
 /* styles for divs for text on pages */
 
@@ -59,6 +62,7 @@ body {
 	display: block;
 	overflow: hidden;
 }
+
 
 /* Navigation menu style */
 
@@ -120,6 +124,7 @@ div.text {
 	color: rgb(63, 63, 63);
 }
 
+
 /* Social media icon styles */
 
 .fa {
@@ -161,6 +166,7 @@ div.text {
 	color: white;
 }
 
+
 /* Styling footer */
 
 #footer {
@@ -175,6 +181,7 @@ div.text {
 	text-align: center;
 	text-decoration: white;
 }
+
 
 /* Postion of picture and text on interests page */
 
@@ -395,4 +402,42 @@ input[type=submit],
 .comment-containder {
 	width: 100%;
 	overflow: hidden;
+}
+
+#comments-form {
+	display: none;
+}
+
+#user-login {
+	display: block;
+}
+
+#user-logout {
+	display: none;
+}
+
+#login-button {
+	height: 46px;
+	background-color: #f3b5a7;
+	color: white;
+	padding: 14px 20px;
+	margin: 8px 0;
+	border: 1px solid #f5b3a5;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 15px;
+}
+
+#logout-button {
+	float: right;
+	height: 28px;
+	background-color: #f3b5a7;
+	color: white;
+	padding: 8px 20px;
+	margin: 8px 0;
+	border: 1px solid #f5b3a5;
+	border-radius: 4px;
+	cursor: pointer;
+	text-decoration: none;
+	font-size: 15px;
 }
