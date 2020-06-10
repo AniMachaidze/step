@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+
 /**
  * Fetches comments from the servers and adds them to the DOM.
  */
@@ -30,10 +31,11 @@ function getComments() {
 			commentListElement.innerHTML = '';
 			comments.forEach((comment) => {
 				let date = new Date(comment.date);
+				console.log(comment.isAbleToDelete);
 				commentListElement.appendChild(
 					createListElement(comment.userName, comment.userEmail,
 						date.getMonth() + '/' + date.getDate() + '/' +
-						date.getFullYear(), comment.content, comment.emotion));
+						date.getFullYear(), comment.content, comment.emotion, comment.isAbleToDelete));
 			})
 
 		});
@@ -42,12 +44,13 @@ function getComments() {
 /**
  * Fetches delete-data, deletes all commennts
  */
-function deleteComments(author, date, text, emotion) {
+function deleteComments(userName, userEmail, date, text, emotion) {
 	// TODO: Delete comments with id instead of parameters
 	const pageEl = document.getElementById("page");
 	const page = pageEl.value;
 	const queryStr = 'page=' + page + '&' +
-		'author=' + author + '&' +
+		'userName=' + userName + '&' +
+		'userEmail=' + userEmail + '&' +
 		'date=' + date + '&' +
 		'text=' + text + '&' +
 		'emotion=' + emotion;
@@ -66,7 +69,7 @@ function deleteComments(author, date, text, emotion) {
 /** 
  * Creates an <li> element containing author, date, comment and emotion emoji.
  */
-function createListElement(userName, userEmail, date, text, emotion) {
+function createListElement(userName, userEmail, date, text, emotion, isAbleToDelete) {
 	const liElement = document.createElement('li');
 	const containerDiv = document.createElement('div');
 	const emotionEl = document.createElement('div');
@@ -88,13 +91,6 @@ function createListElement(userName, userEmail, date, text, emotion) {
 			emotionEl.innerHTML = '&#128522; ';
 	}
 
-	const deleteButton = document.createElement('button');
-	deleteButton.innerHTML = '&#10005;';
-	deleteButton.className = "delete-button";
-	deleteButton.onclick = function () {
-		deleteComments(author, date, text, emotion);
-	}
-
 	containerDiv.className = 'comment-container';
 	containerDiv.appendChild(emotionEl);
 	const userNameText = document.createElement('b');
@@ -103,7 +99,17 @@ function createListElement(userName, userEmail, date, text, emotion) {
 	userEmailText.innerText = userEmail;
 	emotionEl.appendChild(userNameText);
 	emotionEl.appendChild(userEmailText);
-	emotionEl.appendChild(deleteButton);
+
+	if (isAbleToDelete === true) {
+		const deleteButton = document.createElement('button');
+		deleteButton.innerHTML = '&#10005;';
+		deleteButton.className = "delete-button";
+		deleteButton.onclick = function () {
+			deleteComments(userName, userEmail, date, text, emotion);
+		}
+		emotionEl.appendChild(deleteButton);
+	}
+
 	const dateNode = document.createElement('i');
 	dateNode.innerText = date;
 	containerDiv.appendChild(dateNode);
@@ -117,11 +123,10 @@ function createListElement(userName, userEmail, date, text, emotion) {
 /** 
  * Checks if the user is logged in and shows comment submission form.
  */
-function checkLogin() {
+async function checkLogin() {
 	var page = window.location.pathname;
 	const queryStr = 'page=' + page;
-	fetch('/user?' + queryStr).
-	then(response => response.json())
+	fetch('/user?' + queryStr).then(response => response.json())
 		.then((user) => {
 			if (user.loggedin === 'true') {
 				const commentsForm = document.getElementById('comments-form');
@@ -156,6 +161,6 @@ function login() {
  * Calls functions when page is loaded.
  */
 function start() {
-	getComments();
 	checkLogin();
+	getComments();
 }

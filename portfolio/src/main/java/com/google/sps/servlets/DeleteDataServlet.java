@@ -21,6 +21,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
+
 
 @WebServlet("/delete-data")
 public class DeleteDataServlet extends HttpServlet {
@@ -31,7 +34,8 @@ public class DeleteDataServlet extends HttpServlet {
         // TODO: delete comment using unique ID instead of parameters
         String page = request.getParameter("page");
         String text = request.getParameter("text");
-        String author = request.getParameter("author");
+        String userName = request.getParameter("userName");
+        String userEmail = request.getParameter("userEmail");
         String emotion = request.getParameter("emotion");
 
         Query query = new Query("Comment-" + page);
@@ -39,13 +43,15 @@ public class DeleteDataServlet extends HttpServlet {
         if (!text.equals("undefined")) {
             Filter textPropertyFilter = new FilterPredicate("text",
                 FilterOperator.EQUAL, text);
-            Filter authorPropertyFilter = new FilterPredicate("author",
-                FilterOperator.EQUAL, author);
+            Filter userNamePropertyFilter = new FilterPredicate("userName",
+                FilterOperator.EQUAL, userName);
+            Filter userEmailPropertyFilter = new FilterPredicate("userEmail",
+                FilterOperator.EQUAL, userEmail);
             Filter emotionPropertyFilter = new FilterPredicate("emotion",
                 FilterOperator.EQUAL, emotion);
             CompositeFilter filter = CompositeFilterOperator
-                .and(textPropertyFilter, authorPropertyFilter,
-                    emotionPropertyFilter);
+                .and(textPropertyFilter, userNamePropertyFilter,
+                    userEmailPropertyFilter, emotionPropertyFilter);
             query.setFilter(filter);
         }
 
