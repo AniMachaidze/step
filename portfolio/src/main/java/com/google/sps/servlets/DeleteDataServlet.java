@@ -15,8 +15,6 @@ import java.util.List;
 import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
-import com.google.appengine.api.datastore.Query.CompositeFilter;
-import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -31,28 +29,14 @@ public class DeleteDataServlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
     throws IOException {
-        // TODO: delete comment using unique ID instead of parameters
         String page = request.getParameter("page");
-        String text = request.getParameter("text");
-        String userName = request.getParameter("userName");
-        String userEmail = request.getParameter("userEmail");
-        String emotion = request.getParameter("emotion");
-
+        String id = request.getParameter("id");
         Query query = new Query("Comment-" + page);
 
-        if (!text.equals("undefined")) {
-            Filter textPropertyFilter = new FilterPredicate("text",
-                FilterOperator.EQUAL, text);
-            Filter userNamePropertyFilter = new FilterPredicate("userName",
-                FilterOperator.EQUAL, userName);
-            Filter userEmailPropertyFilter = new FilterPredicate("userEmail",
-                FilterOperator.EQUAL, userEmail);
-            Filter emotionPropertyFilter = new FilterPredicate("emotion",
-                FilterOperator.EQUAL, emotion);
-            CompositeFilter filter = CompositeFilterOperator
-                .and(textPropertyFilter, userNamePropertyFilter,
-                    userEmailPropertyFilter, emotionPropertyFilter);
-            query.setFilter(filter);
+        if (!id.equals("undefined")) {
+            Filter uuidPropertyFilter = new FilterPredicate("uuid",
+                FilterOperator.EQUAL, id);
+            query.setFilter(uuidPropertyFilter);
         }
 
         DatastoreService datastore = DatastoreServiceFactory

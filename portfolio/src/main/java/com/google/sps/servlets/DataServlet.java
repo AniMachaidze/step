@@ -29,9 +29,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
+import java.util.UUID;
 import com.google.gson.Gson;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.appengine.api.datastore.Query.Filter;
+import com.google.appengine.api.datastore.Query.FilterOperator;
+import com.google.appengine.api.datastore.Query.FilterPredicate;
 
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
@@ -70,7 +74,7 @@ public class DataServlet extends HttpServlet {
         PreparedQuery results = datastore.prepare(query);
 
         comments = new ArrayList<>();
-        String userName, userEmail, text, emotion;
+        String userName, userEmail, text, emotion, id;
         Date date;
         boolean isAbleToDelete = false;
         for (Entity entity: results.asIterable()) {
@@ -80,6 +84,7 @@ public class DataServlet extends HttpServlet {
                 text = (String) entity.getProperty("text");
                 date = (Date) entity.getProperty("date");
                 emotion = (String) entity.getProperty("emotion");
+                id = (String) entity.getProperty("uuid");
                 if (currentUserEmail != null && userEmail.equals(currentUserEmail)) {
                     isAbleToDelete = true;
                 } else {
@@ -91,7 +96,7 @@ public class DataServlet extends HttpServlet {
             }
 
             comments.add(new Comment(text, userName, userEmail, date,
-                emotion, isAbleToDelete));
+                emotion, isAbleToDelete, id));
             maxNumComments--;
             if (maxNumComments <= 0) break;
         }
@@ -114,12 +119,18 @@ public class DataServlet extends HttpServlet {
         UserService userService = UserServiceFactory.getUserService();
         String userEmail = userService.getCurrentUser().getEmail();
 
+        UUID id = UUID.randomUUID();
+        while (collides(id, page)) {
+            id = UUID.randomUUID();
+        }
+
         Entity commentEntity = new Entity("Comment-" + page);
         commentEntity.setProperty("userEmail", userEmail);
         commentEntity.setProperty("userName", userName);
         commentEntity.setProperty("text", text);
         commentEntity.setProperty("date", date);
         commentEntity.setProperty("emotion", emotion);
+        commentEntity.setProperty("uuid", id.toString());
 
         DatastoreService datastore = DatastoreServiceFactory
             .getDatastoreService();
@@ -138,5 +149,28 @@ public class DataServlet extends HttpServlet {
             return defaultValue;
         }
         return value;
+    }
+
+    /**
+     * Checks if the id collides with other ids in datastore
+     */
+    private boolean collides(UUID id, String page) {
+        Query query = new Query("Comment-" + page);
+
+        Filter uuidPropertyFilter = new FilterPredicate("uuid",
+            FilterOperator.EQUAL, id.toString());
+        query.setFilter(uuidPropertyFilter);
+        DatastoreService datastore = DatastoreServiceFactory
+            .getDatastoreService();
+        PreparedQuery results = datastore.prepare(query);
+
+        for (Entity entity: results.asIterable()) {
+            String entityId = (String) entity.getProperty("uuid");
+            if (entityId.equals(id.toString())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

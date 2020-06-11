@@ -31,11 +31,11 @@ function getComments() {
 			commentListElement.innerHTML = '';
 			comments.forEach((comment) => {
 				let date = new Date(comment.date);
-				console.log(comment.isAbleToDelete);
 				commentListElement.appendChild(
 					createListElement(comment.userName, comment.userEmail,
 						date.getMonth() + '/' + date.getDate() + '/' +
-						date.getFullYear(), comment.content, comment.emotion, comment.isAbleToDelete));
+						date.getFullYear(), comment.content, comment.emotion,
+						comment.isAbleToDelete, comment.id));
 			})
 
 		});
@@ -44,24 +44,18 @@ function getComments() {
 /**
  * Fetches delete-data, deletes all commennts
  */
-function deleteComments(userName, userEmail, date, text, emotion) {
-	// TODO: Delete comments with id instead of parameters
+function deleteComments(id) {
 	const pageEl = document.getElementById("page");
 	const page = pageEl.value;
-	const queryStr = 'page=' + page + '&' +
-		'userName=' + userName + '&' +
-		'userEmail=' + userEmail + '&' +
-		'date=' + date + '&' +
-		'text=' + text + '&' +
-		'emotion=' + emotion;
+	const queryStr = 'page=' + page + '&' + 'id=' + id;
 	fetch('/delete-data?' + queryStr, {
 		method: 'POST',
 	});
 
-	if (!text) {
+	if (!id) {
 		document.getElementById('comments-container').innerHTML = '';
 	} else {
-		getComments();
+		location.reload();
 	}
 
 }
@@ -69,7 +63,8 @@ function deleteComments(userName, userEmail, date, text, emotion) {
 /** 
  * Creates an <li> element containing author, date, comment and emotion emoji.
  */
-function createListElement(userName, userEmail, date, text, emotion, isAbleToDelete) {
+function createListElement(userName, userEmail, date, text,
+	emotion, isAbleToDelete, id) {
 	const liElement = document.createElement('li');
 	const containerDiv = document.createElement('div');
 	const emotionEl = document.createElement('div');
@@ -105,7 +100,7 @@ function createListElement(userName, userEmail, date, text, emotion, isAbleToDel
 		deleteButton.innerHTML = '&#10005;';
 		deleteButton.className = "delete-button";
 		deleteButton.onclick = function () {
-			deleteComments(userName, userEmail, date, text, emotion);
+			deleteComments(id);
 		}
 		emotionEl.appendChild(deleteButton);
 	}
