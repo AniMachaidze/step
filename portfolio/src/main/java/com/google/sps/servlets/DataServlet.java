@@ -33,6 +33,9 @@ import java.util.UUID;
 import com.google.gson.Gson;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.appengine.api.datastore.Query.Filter;
+import com.google.appengine.api.datastore.Query.FilterOperator;
+import com.google.appengine.api.datastore.Query.FilterPredicate;
 
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
@@ -117,6 +120,9 @@ public class DataServlet extends HttpServlet {
         String userEmail = userService.getCurrentUser().getEmail();
 
         UUID id = UUID.randomUUID();
+        while (collides(id, page)) {
+            id = UUID.randomUUID();
+        }
 
         Entity commentEntity = new Entity("Comment-" + page);
         commentEntity.setProperty("userEmail", userEmail);
@@ -143,5 +149,28 @@ public class DataServlet extends HttpServlet {
             return defaultValue;
         }
         return value;
+    }
+
+    /**
+     * Checks if the id collides with other ids in datastore
+     */
+    private boolean collides(UUID id, String page) {
+        Query query = new Query("Comment-" + page);
+
+        Filter uuidPropertyFilter = new FilterPredicate("uuid",
+            FilterOperator.EQUAL, id.toString());
+        query.setFilter(uuidPropertyFilter);
+        DatastoreService datastore = DatastoreServiceFactory
+            .getDatastoreService();
+        PreparedQuery results = datastore.prepare(query);
+
+        for (Entity entity: results.asIterable()) {
+            String entityId = (String) entity.getProperty("uuid");
+            if (entityId.equals(id.toString())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
