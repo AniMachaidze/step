@@ -54,7 +54,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
@@ -170,7 +169,6 @@ public class DataServlet extends HttpServlet {
         }
         return value;
     }
-
 
     /** Returns a URL that points to the uploaded file, or null if the user
      * didn't upload a file. 
