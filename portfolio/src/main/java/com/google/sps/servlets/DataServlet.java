@@ -32,6 +32,18 @@ import java.util.Date;
 import com.google.gson.Gson;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.appengine.api.blobstore.BlobInfo;
+import com.google.appengine.api.blobstore.BlobInfoFactory;
+import com.google.appengine.api.blobstore.BlobKey;
+import com.google.appengine.api.blobstore.BlobstoreService;
+import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
+import com.google.appengine.api.images.ImagesService;
+import com.google.appengine.api.images.ImagesServiceFactory;
+import com.google.appengine.api.images.ServingUrlOptions;
+import java.util.Map;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
@@ -70,7 +82,7 @@ public class DataServlet extends HttpServlet {
         PreparedQuery results = datastore.prepare(query);
 
         comments = new ArrayList<>();
-        String userName, userEmail, text, emotion;
+        String userName, userEmail, text, emotion, imageUrl;
         Date date;
         boolean isAbleToDelete = false;
         for (Entity entity: results.asIterable()) {
@@ -85,13 +97,14 @@ public class DataServlet extends HttpServlet {
                 } else {
                     isAbleToDelete = false;
                 }
+                imageUrl = (String) entity.getProperty("imageUrl");
             } catch (ClassCastException e) {
                 System.err.println("Could not cast entry property");
                 break;
             }
 
             comments.add(new Comment(text, userName, userEmail, date,
-                emotion, isAbleToDelete));
+                emotion, isAbleToDelete, imageUrl));
             maxNumComments--;
             if (maxNumComments <= 0) break;
         }
@@ -114,18 +127,21 @@ public class DataServlet extends HttpServlet {
         UserService userService = UserServiceFactory.getUserService();
         String userEmail = userService.getCurrentUser().getEmail();
 
+        String imageUrl = getUploadedFileUrl(request, "image");
+
         Entity commentEntity = new Entity("Comment-" + page);
         commentEntity.setProperty("userEmail", userEmail);
         commentEntity.setProperty("userName", userName);
         commentEntity.setProperty("text", text);
         commentEntity.setProperty("date", date);
         commentEntity.setProperty("emotion", emotion);
+        commentEntity.setProperty("imageUrl", imageUrl);
 
         DatastoreService datastore = DatastoreServiceFactory
             .getDatastoreService();
         datastore.put(commentEntity);
 
-        response.sendRedirect(page);
+        response.sendRedirect("/" + page);
     }
 
     /**
@@ -138,5 +154,40 @@ public class DataServlet extends HttpServlet {
             return defaultValue;
         }
         return value;
+    }
+
+    /** Returns a URL that points to the uploaded file, or null if the user
+     * didn't upload a file. 
+     */
+    private String getUploadedFileUrl(HttpServletRequest request,
+        String formInputElementName) {
+        BlobstoreService blobstoreService = BlobstoreServiceFactory
+            .getBlobstoreService();
+        Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(request);
+        List<BlobKey> blobKeys = blobs.get(formInputElementName);
+
+        // User submitted form without selecting a file, so we can't get a URL. (dev server)
+        if (blobKeys == null || blobKeys.isEmpty()) {
+            return null;
+        }
+
+        BlobKey blobKey = blobKeys.get(0);
+
+        // User submitted form without selecting a file, so we can't get a URL. (live server)
+        BlobInfo blobInfo = new BlobInfoFactory().loadBlobInfo(blobKey);
+        if (blobInfo.getSize() == 0) {
+            blobstoreService.delete(blobKey);
+            return null;
+        }
+
+        ImagesService imagesService = ImagesServiceFactory.getImagesService();
+        ServingUrlOptions options = ServingUrlOptions.Builder.withBlobKey(blobKey);
+
+        try {
+            URL url = new URL(imagesService.getServingUrl(options));
+            return url.getPath();
+        } catch (MalformedURLException e) {
+            return imagesService.getServingUrl(options);
+        }
     }
 }
