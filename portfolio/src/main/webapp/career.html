@@ -137,7 +137,7 @@
 
          <div id="comments">
             <div id="comments-form">
-               <form action="/data" method="POST">
+               <form action="/data" method="POST" id="form" enctype="multipart/form-data">
                   <p>Add a comment:</p>
                   <input type="text" name="author" id="author" placeholder="Your name..">
                   <div id="horizontal-wrapper"> 
@@ -151,6 +151,8 @@
                   </div>
                   <input hidden name="page" value="career.html" id="page">
                   <br/>
+                  <!-- TODO: Add style to file input -->
+                  <input type="file" name="image">
                   <input type="submit"/>
                </form>
             </div>

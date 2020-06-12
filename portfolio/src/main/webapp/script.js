@@ -35,7 +35,7 @@ function getComments() {
 					createListElement(comment.userName, comment.userEmail,
 						date.getMonth() + '/' + date.getDate() + '/' +
 						date.getFullYear(), comment.content, comment.emotion,
-						comment.isAbleToDelete, comment.id));
+						comment.isAbleToDelete, comment.id, comment.imageUrl));
 			})
 
 		});
@@ -64,7 +64,7 @@ function deleteComments(id) {
  * Creates an <li> element containing author, date, comment and emotion emoji.
  */
 function createListElement(userName, userEmail, date, text,
-	emotion, isAbleToDelete, id) {
+	emotion, isAbleToDelete, id, imageUrl) {
 	const liElement = document.createElement('li');
 	const containerDiv = document.createElement('div');
 	const emotionEl = document.createElement('div');
@@ -111,6 +111,10 @@ function createListElement(userName, userEmail, date, text,
 	liElement.appendChild(containerDiv);
 	const textNode = document.createTextNode(text);
 	liElement.appendChild(textNode);
+    // TODO: Add style to image element
+	const imageUrlEl = document.createElement('img');
+	imageUrlEl.src = imageUrl;
+	liElement.appendChild(imageUrlEl);
 
 	return liElement;
 }
@@ -158,4 +162,16 @@ function login() {
 function start() {
 	checkLogin();
 	getComments();
+	blobUpload();
+}
+
+function blobUpload() {
+	fetch('/blobstore-upload-url')
+		.then((response) => {
+			return response.text();
+		})
+		.then((imageUploadUrl) => {
+			const commentForm = document.getElementById('form');
+			commentForm.action = imageUploadUrl;
+		});
 }

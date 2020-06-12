@@ -10,16 +10,18 @@ public final class Comment {
     private final Date date;
     private final String emotion;
     private final boolean isAbleToDelete;
+    private final String imageUrl;
     private final String id;
 
     public Comment(String content, String userName, String userEmail,
-        Date date, String emotion, boolean isAbleToDelete, String id) {
+        Date date, String emotion, boolean isAbleToDelete, String id, String imageUrl) {
         this.content = content;
         this.userName = userName;
         this.userEmail = userEmail;
         this.date = date;
         this.emotion = emotion;
         this.isAbleToDelete = isAbleToDelete;
+        this.imageUrl = imageUrl;
         this.id = id;
     }
 
@@ -47,6 +49,10 @@ public final class Comment {
         return isAbleToDelete;
     }
 
+    public String imageUrl() {
+        return imageUrl;
+    }
+  
     public String getId() {
         return id;
     }
