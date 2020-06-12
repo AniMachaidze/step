@@ -46,7 +46,10 @@
         <artifactId>appengine-maven-plugin</artifactId>
         <version>2.2.0</version>
         <configuration>
+<<<<<<< HEAD
           <!-- TODO: set project ID.-->
+=======
+>>>>>>> ddfd09d5ebdb7eebc0e86472254069ae99a82a17
           <deploy.projectId>animach-step</deploy.projectId>
           <deploy.version>1</deploy.version>
         </configuration>

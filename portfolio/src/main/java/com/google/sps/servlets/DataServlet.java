@@ -26,6 +26,16 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.Query.Filter;
+import com.google.appengine.api.datastore.Query.FilterOperator;
+import com.google.appengine.api.datastore.Query.FilterPredicate;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
+import com.google.appengine.api.blobstore.BlobInfo;
+import com.google.appengine.api.blobstore.BlobInfoFactory;
+import com.google.appengine.api.blobstore.BlobKey;
+import com.google.appengine.api.blobstore.BlobstoreService;
+import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.images.ImagesService;
 import com.google.appengine.api.images.ImagesServiceFactory;
 import com.google.appengine.api.images.ServingUrlOptions;
@@ -43,6 +53,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
@@ -81,7 +92,7 @@ public class DataServlet extends HttpServlet {
         PreparedQuery results = datastore.prepare(query);
 
         comments = new ArrayList<>();
-        String userName, userEmail, text, emotion, imageUrl;
+        String userName, userEmail, text, emotion, id, imageUrl;
         Date date;
         boolean isAbleToDelete = false;
         for (Entity entity: results.asIterable()) {
@@ -91,6 +102,7 @@ public class DataServlet extends HttpServlet {
                 text = (String) entity.getProperty("text");
                 date = (Date) entity.getProperty("date");
                 emotion = (String) entity.getProperty("emotion");
+                id = (String) entity.getProperty("uuid");
                 if (currentUserEmail != null && userEmail.equals(currentUserEmail)) {
                     isAbleToDelete = true;
                 } else {
@@ -103,7 +115,7 @@ public class DataServlet extends HttpServlet {
             }
 
             comments.add(new Comment(text, userName, userEmail, date,
-                emotion, isAbleToDelete, imageUrl));
+                emotion, isAbleToDelete, id, imageUrl));
             maxNumComments--;
             if (maxNumComments <= 0) break;
         }
@@ -125,8 +137,11 @@ public class DataServlet extends HttpServlet {
 
         UserService userService = UserServiceFactory.getUserService();
         String userEmail = userService.getCurrentUser().getEmail();
-
         String imageUrl = getUploadedFileUrl(request, "image");
+      
+        UUID id = UUID.randomUUID();
+        while (collides(id, page)) {
+            id = UUID.randomUUID();
 
         Entity commentEntity = new Entity("Comment-" + page);
         commentEntity.setProperty("userEmail", userEmail);
@@ -135,6 +150,7 @@ public class DataServlet extends HttpServlet {
         commentEntity.setProperty("date", date);
         commentEntity.setProperty("emotion", emotion);
         commentEntity.setProperty("imageUrl", imageUrl);
+        commentEntity.setProperty("uuid", id.toString());
 
         DatastoreService datastore = DatastoreServiceFactory
             .getDatastoreService();
@@ -154,6 +170,7 @@ public class DataServlet extends HttpServlet {
         }
         return value;
     }
+
 
     /** Returns a URL that points to the uploaded file, or null if the user
      * didn't upload a file. 
@@ -190,5 +207,28 @@ public class DataServlet extends HttpServlet {
             System.err.println("Could not get relative path to file");
             return imagesService.getServingUrl(options);
         }
+    }
+      
+    /**
+     * Checks if the id collides with other ids in datastore
+     */
+    private boolean collides(UUID id, String page) {
+        Query query = new Query("Comment-" + page);
+
+        Filter uuidPropertyFilter = new FilterPredicate("uuid",
+            FilterOperator.EQUAL, id.toString());
+        query.setFilter(uuidPropertyFilter);
+        DatastoreService datastore = DatastoreServiceFactory
+            .getDatastoreService();
+        PreparedQuery results = datastore.prepare(query);
+
+        for (Entity entity: results.asIterable()) {
+            String entityId = (String) entity.getProperty("uuid");
+            if (entityId.equals(id.toString())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
