@@ -115,6 +115,7 @@ function createListElement(userName, userEmail, date, text, emotion, isAbleToDel
 	liElement.appendChild(containerDiv);
 	const textNode = document.createTextNode(text);
 	liElement.appendChild(textNode);
+    // TODO: Add style to image element
 	const imageUrlEl = document.createElement('img');
 	imageUrlEl.src = imageUrl;
 	liElement.appendChild(imageUrlEl);
