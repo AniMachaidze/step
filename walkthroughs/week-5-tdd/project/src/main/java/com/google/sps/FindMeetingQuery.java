@@ -24,34 +24,37 @@ public final class FindMeetingQuery {
 	private static final int END_OF_DAY = 1440;
 
 	public Collection<TimeRange> query(Collection<Event> events,
-		MeetingRequest request) {
-		int duration = (int) request.getDuration();
+	  MeetingRequest request) {
+	  int duration = (int) request.getDuration();
 		Collection<String> attendees = request.getAttendees();
 		Collection<String> optionalAttendees = request.getOptionalAttendees();
 
 		Collection<TimeRange> availableTimes = new ArrayList<>();
-		Collection<TimeRange> availableTimesWithOptionals = new ArrayList<>();
+		Collection<TimeRange> availableTimesOptionals = new ArrayList<>();
 
-		availableTimes = getAvaliableTimes(attendees, events, duration);
+		availableTimes = getAvailableTimes(attendees, events, duration);
 
-		if (!optionalAttendees.isEmpty()) {
-			availableTimesWithOptionals = getAvaliableTimes(optionalAttendees,
+		if (optionalAttendees.isEmpty()) {
+			// If there is no optional attendees only consider required attendees
+			return availableTimes;
+		} else {
+			// Otherwise, calculate best times for optional attendees
+			availableTimesOptionals = getAvailableTimes(optionalAttendees,
 				events, duration);
 		}
 
-		if (optionalAttendees.isEmpty()) {
-			return availableTimes;
-		}
-
+		// If there is no required atendees, return time which works for optionals
 		if (attendees.isEmpty()) {
-			return availableTimesWithOptionals;
+			return availableTimesOptionals;
 		}
 
-		availableTimesWithOptionals = intersection(availableTimesWithOptionals,
-			availableTimes);
+		// Find times that works both for required and optional attendees
+		Collection < TimeRange > availableTimesBothAttendees =
+		    intersection(availableTimesOptionals, availableTimes);
 
-		if (!availableTimesWithOptionals.isEmpty()) {
-			return availableTimesWithOptionals;
+		// Return time if any which works for both required and optional attendees 
+		if (!availableTimesBothAttendees.isEmpty()) {
+			return availableTimesBothAttendees;
 		}
 
 		return availableTimes;
@@ -61,29 +64,35 @@ public final class FindMeetingQuery {
 	 * Finds avaliable times for the given atteendee list, input 
 	 * collection and event duration
 	 */
-	private Collection<TimeRange> getAvaliableTimes(Collection<String> attendees,
+	private Collection<TimeRange> getAvailableTimes(Collection<String> attendees,
 		Collection<Event> events, int duration) {
+			// TODO: Make this method more optimal
 		Collection<TimeRange> availableTimes = new ArrayList<>();
 
+		// possible start and end times of the event 
 		int start = 0;
 		int end = start + duration;
-		int availablePeriodStart = -1, availablePeriodEnd = -1;
+		
+		// start and end time of the free period when event can occur
+		int availablePeriodStart = -1;
+		int availablePeriodEnd = -1;
 
-		while (end<= END_OF_DAY) {
+		// Consider every possible time period and see if it works for attendees	
+		while (end <= END_OF_DAY) {
 			TimeRange currentTimeRange = TimeRange.fromStartDuration(start, duration);
 			boolean works = true;
 
+			// Comparing possible time range to the events to see if there is any overlaps
 			for (Event event: events) {
-				if (!works) break;
-
 				TimeRange eventTimeRange = event.getWhen();
 				if (currentTimeRange.overlaps(eventTimeRange)) {
 					Collection<String> eventAttendees = event.getAttendees();
 					if (!Collections.disjoint(attendees, eventAttendees)) {
 						works = false;
-						continue;
 					}
 				}
+                
+        if (!works) break;
 			}
 
 			if (works) {
