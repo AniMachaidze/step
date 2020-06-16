@@ -11,26 +11,23 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 package com.google.sps;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Comparator;
 
 public final class FindMeetingQuery {
 
-	private static final int END_OF_DAY = 1440;
+	public Collection < TimeRange > query(Collection < Event > events, MeetingRequest request) {
+		int duration = (int) request.getDuration();
+		Collection < String > attendees = request.getAttendees();
+		Collection < String > optionalAttendees = request.getOptionalAttendees();
 
-	public Collection<TimeRange> query(Collection<Event> events,
-	  MeetingRequest request) {
-	  int duration = (int) request.getDuration();
-		Collection<String> attendees = request.getAttendees();
-		Collection<String> optionalAttendees = request.getOptionalAttendees();
-
-		Collection<TimeRange> availableTimes = new ArrayList<>();
-		Collection<TimeRange> availableTimesOptionals = new ArrayList<>();
+		Collection < TimeRange > availableTimes = new ArrayList < >();
+		Collection < TimeRange > availableTimesOptionals = new ArrayList < >();
 
 		availableTimes = getAvailableTimes(attendees, events, duration);
 
@@ -39,8 +36,7 @@ public final class FindMeetingQuery {
 			return availableTimes;
 		} else {
 			// Otherwise, calculate best times for optional attendees
-			availableTimesOptionals = getAvailableTimes(optionalAttendees,
-				events, duration);
+			availableTimesOptionals = getAvailableTimes(optionalAttendees, events, duration);
 		}
 
 		// If there is no required atendees, return time which works for optionals
@@ -49,8 +45,7 @@ public final class FindMeetingQuery {
 		}
 
 		// Find times that works both for required and optional attendees
-		Collection < TimeRange > availableTimesBothAttendees =
-		    intersection(availableTimesOptionals, availableTimes);
+		Collection < TimeRange > availableTimesBothAttendees = intersection(availableTimesOptionals, availableTimes);
 
 		// Return time if any which works for both required and optional attendees 
 		if (!availableTimesBothAttendees.isEmpty()) {
@@ -64,21 +59,20 @@ public final class FindMeetingQuery {
 	 * Finds avaliable times for the given atteendee list, input 
 	 * collection and event duration
 	 */
-	private Collection<TimeRange> getAvailableTimes(Collection<String> attendees,
-		Collection<Event> events, int duration) {
-			// TODO: Make this method more optimal
-		Collection<TimeRange> availableTimes = new ArrayList<>();
+	private Collection < TimeRange > getAvailableTimes(Collection < String > attendees, Collection < Event > events, int duration) {
+		// TODO: Make this method more optimal
+		Collection < TimeRange > availableTimes = new ArrayList < >();
 
 		// possible start and end times of the event 
 		int start = 0;
 		int end = start + duration;
-		
+
 		// start and end time of the free period when event can occur
 		int availablePeriodStart = -1;
 		int availablePeriodEnd = -1;
 
 		// Consider every possible time period and see if it works for attendees	
-		while (end <= END_OF_DAY) {
+		while (end <= TimeRange.END_OF_DAY) {
 			TimeRange currentTimeRange = TimeRange.fromStartDuration(start, duration);
 			boolean works = true;
 
@@ -86,13 +80,13 @@ public final class FindMeetingQuery {
 			for (Event event: events) {
 				TimeRange eventTimeRange = event.getWhen();
 				if (currentTimeRange.overlaps(eventTimeRange)) {
-					Collection<String> eventAttendees = event.getAttendees();
+					Collection < String > eventAttendees = event.getAttendees();
 					if (!Collections.disjoint(attendees, eventAttendees)) {
 						works = false;
 					}
 				}
-                
-        if (!works) break;
+
+				if (!works) break;
 			}
 
 			if (works) {
@@ -102,15 +96,13 @@ public final class FindMeetingQuery {
 
 				availablePeriodEnd = end;
 
-				if (end == END_OF_DAY) {
-					TimeRange availableTime = TimeRange
-						.fromStartEnd(availablePeriodStart, availablePeriodEnd, false);
+				if (end == TimeRange.END_OF_DAY) {
+					TimeRange availableTime = TimeRange.fromStartEnd(availablePeriodStart, availablePeriodEnd, true);
 					availableTimes.add(availableTime);
 				}
 			} else {
 				if (availablePeriodEnd != -1) {
-					TimeRange availableTime = TimeRange
-						.fromStartEnd(availablePeriodStart, availablePeriodEnd, false);
+					TimeRange availableTime = TimeRange.fromStartEnd(availablePeriodStart, availablePeriodEnd, false);
 					availableTimes.add(availableTime);
 				}
 
@@ -128,9 +120,8 @@ public final class FindMeetingQuery {
 	 * Finds intersection between elements of two lists of 
 	 * TimeRange and returns as a list
 	 */
-	private List<TimeRange> intersection(Collection<TimeRange> list1,
-		Collection<TimeRange> list2) {
-		List<TimeRange> intersection = new ArrayList<>();
+	private List < TimeRange > intersection(Collection < TimeRange > list1, Collection < TimeRange > list2) {
+		List < TimeRange > intersection = new ArrayList < >();
 
 		for (TimeRange el1: list1) {
 			for (TimeRange el2: list2) {

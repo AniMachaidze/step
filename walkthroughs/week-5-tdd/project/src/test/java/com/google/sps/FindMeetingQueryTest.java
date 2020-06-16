@@ -30,6 +30,7 @@ import org.junit.runners.JUnit4;
 public final class FindMeetingQueryTest {
     private static final Collection<Event> NO_EVENTS = Collections.emptySet();
     private static final Collection<String> NO_ATTENDEES = Collections.emptySet();
+    private static final Collection<TimeRange> NO_TIME = Arrays.asList();
 
     // Some people that we can use in our tests.
     private static final String PERSON_A = "Person A";
@@ -76,7 +77,7 @@ public final class FindMeetingQueryTest {
             duration);
 
         Collection<TimeRange> actual = query.query(NO_EVENTS, request);
-        Collection<TimeRange> expected = Arrays.asList();
+        Collection<TimeRange> expected = NO_TIME;
 
         Assert.assertEquals(expected, actual);
     }
@@ -293,7 +294,7 @@ public final class FindMeetingQueryTest {
             DURATION_60_MINUTES);
 
         Collection<TimeRange> actual = query.query(events, request);
-        Collection<TimeRange> expected = Arrays.asList();
+        Collection<TimeRange> expected = NO_TIME;
 
         Assert.assertEquals(expected, actual);
     }
@@ -354,7 +355,7 @@ public final class FindMeetingQueryTest {
                 .fromStartDuration(TIME_0830AM, DURATION_30_MINUTES),
                 Arrays.asList(PERSON_C)));
 
-        MeetingRequest request =
+        MeetingRequest request = 
             new MeetingRequest(Arrays.asList(PERSON_A, PERSON_B), DURATION_30_MINUTES);
 
         request.addOptionalAttendee(PERSON_C);
@@ -440,7 +441,7 @@ public final class FindMeetingQueryTest {
         //
         // Events  : |--A--||----B---------|
         // Day     : |---------------------|
-        // Options :       
+        // Options :        
 
         Collection<Event> events = Arrays.asList(
             new Event("Event 1", TimeRange
@@ -456,7 +457,7 @@ public final class FindMeetingQueryTest {
         request.addOptionalAttendee(PERSON_B);
 
         Collection<TimeRange> actual = query.query(events, request);
-        Collection<TimeRange> expected = Arrays.asList();
+        Collection<TimeRange> expected = NO_TIME;
 
         Assert.assertEquals(expected, actual);
     }
