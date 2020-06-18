@@ -30,14 +30,12 @@
       <version>2.8.6</version>
     </dependency>
 
-
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.12</version>
       <scope>test</scope>
     </dependency>
-
   </dependencies>
 
   <build>
@@ -50,6 +48,26 @@
           <deploy.projectId>YOUR_PROJECT_ID_HERE</deploy.projectId>
           <deploy.version>1</deploy.version>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.coveo</groupId>
+        <artifactId>fmt-maven-plugin</artifactId>
+        <version>2.9</version>
+        <configuration>
+          <verbose>true</verbose>
+          <filesNamePattern>.*\.java</filesNamePattern>
+          <skip>false</skip>
+          <skipSortingImports>false</skipSortingImports>
+          <style>google</style>
+          <displayFiles>false</displayFiles>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>format</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
