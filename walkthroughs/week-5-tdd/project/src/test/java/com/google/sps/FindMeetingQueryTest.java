@@ -35,9 +35,11 @@ public final class FindMeetingQueryTest {
   private static final String PERSON_B = "Person B";
   private static final String PERSON_C = "Person C";
   private static final String PERSON_D = "Person D";
+  private static final String PERSON_F = "Person F";
 
   // All dates are the first day of the year 2020.
   private static final int TIME_0030AM = TimeRange.getTimeInMinutes(0, 30);
+  private static final int TIME_0100AM = TimeRange.getTimeInMinutes(1, 0);
   private static final int TIME_0800AM = TimeRange.getTimeInMinutes(8, 0);
   private static final int TIME_0830AM = TimeRange.getTimeInMinutes(8, 30);
   private static final int TIME_0845AM = TimeRange.getTimeInMinutes(8, 45);
@@ -732,6 +734,116 @@ public final class FindMeetingQueryTest {
             TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0830AM, false),
             TimeRange.fromStartEnd(TIME_1000AM, TIME_1100AM, false),
             TimeRange.fromStartEnd(TIME_1330AM, TimeRange.END_OF_DAY, true));
+
+    Assert.assertEquals(expected, actual);
+  }
+
+  @Test
+  public void optionalAndRequiredHaveSameEvent() {
+
+    Collection<Event> events =
+        Arrays.asList(
+            new Event(
+                "Event 1",
+                TimeRange.fromStartEnd(TIME_0100AM, TIME_1000AM, false),
+                Arrays.asList(PERSON_A, PERSON_B)),
+            new Event(
+                "Event 2",
+                TimeRange.fromStartEnd(TIME_0930AM, TimeRange.END_OF_DAY - DURATION_1_HOUR, false),
+                Arrays.asList(PERSON_C)),
+            new Event(
+                "Event 3",
+                TimeRange.fromStartEnd(TIME_0030AM, TIME_1130AM, false),
+                Arrays.asList(PERSON_D)),
+            new Event(
+                "Event 4",
+                TimeRange.fromStartEnd(
+                    TIME_1330AM, TimeRange.END_OF_DAY - DURATION_30_MINUTES, true),
+                Arrays.asList(PERSON_D)));
+
+    MeetingRequest request = new MeetingRequest(Arrays.asList(PERSON_A, PERSON_C), DURATION_1_HOUR);
+    request.addOptionalAttendee(PERSON_B);
+    request.addOptionalAttendee(PERSON_D);
+
+    Collection<TimeRange> actual = query.query(events, request);
+    Collection<TimeRange> expected =
+        Arrays.asList(
+            TimeRange.fromStartDuration(TimeRange.START_OF_DAY, DURATION_1_HOUR),
+            TimeRange.fromStartEnd(
+                TimeRange.END_OF_DAY - DURATION_1_HOUR, TimeRange.END_OF_DAY, true));
+
+    Assert.assertEquals(expected, actual);
+  }
+
+  @Test
+  public void worksForMoreOptionalAttendees() {
+
+    Collection<Event> events =
+        Arrays.asList(
+            new Event(
+                "Event 1",
+                TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_1000AM, false),
+                Arrays.asList(PERSON_B)),
+            new Event(
+                "Event 2",
+                TimeRange.fromStartEnd(TIME_0930AM, TIME_1130AM, false),
+                Arrays.asList(PERSON_D)),
+            new Event(
+                "Event 3",
+                TimeRange.fromStartEnd(TIME_1330AM, TimeRange.END_OF_DAY, false),
+                Arrays.asList(PERSON_D)),
+            new Event(
+                "Event 4",
+                TimeRange.fromStartEnd(TIME_1030AM, TIME_1330AM, false),
+                Arrays.asList(PERSON_A, PERSON_C)));
+
+    MeetingRequest request = new MeetingRequest(Arrays.asList(PERSON_D), DURATION_1_HOUR);
+    request.addOptionalAttendee(PERSON_A);
+    request.addOptionalAttendee(PERSON_B);
+    request.addOptionalAttendee(PERSON_C);
+
+    Collection<TimeRange> actual = query.query(events, request);
+    Collection<TimeRange> expected =
+        Arrays.asList(TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0930AM, false));
+
+    Assert.assertEquals(expected, actual);
+  }
+
+  @Test
+  public void optionsForDifferentGroupsOfOptionals() {
+
+    Collection<Event> events =
+        Arrays.asList(
+            new Event(
+                "Event 1",
+                TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_1000AM, false),
+                Arrays.asList(PERSON_A, PERSON_B)),
+            new Event(
+                "Event 2",
+                TimeRange.fromStartEnd(TIME_0930AM, TIME_1130AM, false),
+                Arrays.asList(PERSON_F)),
+            new Event(
+                "Event 3",
+                TimeRange.fromStartEnd(TIME_1330AM, TimeRange.END_OF_DAY, false),
+                Arrays.asList(PERSON_F)),
+            new Event(
+                "Event 4",
+                TimeRange.fromStartEnd(TIME_1030AM, TIME_1330AM, false),
+                Arrays.asList(PERSON_C, PERSON_D)));
+
+    MeetingRequest request = new MeetingRequest(Arrays.asList(PERSON_F), DURATION_1_HOUR);
+    request.addOptionalAttendee(PERSON_A);
+    request.addOptionalAttendee(PERSON_B);
+    request.addOptionalAttendee(PERSON_C);
+    request.addOptionalAttendee(PERSON_D);
+
+    Collection<TimeRange> actual = query.query(events, request);
+    Collection<TimeRange> expected =
+        Arrays.asList(
+            // works for F and optionals: C and D
+            TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0930AM, false),
+            // works for F and optionals: A and B
+            TimeRange.fromStartEnd(TIME_1130AM, TIME_1330AM, false));
 
     Assert.assertEquals(expected, actual);
   }
