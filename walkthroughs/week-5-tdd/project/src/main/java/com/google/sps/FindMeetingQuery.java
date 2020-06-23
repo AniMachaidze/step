@@ -11,18 +11,22 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 package com.google.sps;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public final class FindMeetingQuery {
 
   /* Finds available times for the meeting, such that every required attendee
-   *  can attend or time periods when everyone can attend (both required and optional)
-   *  if there exists any.
+   *  can attend and higest number of optionals possible is able to attend.
    */
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     int duration = (int) request.getDuration();
@@ -30,115 +34,181 @@ public final class FindMeetingQuery {
     Collection<String> optionalAttendees = request.getOptionalAttendees();
 
     Collection<TimeRange> availableTimes = new ArrayList<>();
-    Collection<TimeRange> availableTimesOptionals = new ArrayList<>();
+    List<Integer> availableTimesOptionals = new ArrayList<>();
 
     availableTimes = getAvailableTimes(attendees, events, duration);
+    availableTimesOptionals = getAvailableTimesForOptionals(optionalAttendees, events, duration);
 
-    // If there is no optional attendees only consider required attendees
-    if (optionalAttendees.isEmpty()) {
-      return availableTimes;
-    }
+    Collection<TimeRange> overlaps =
+        findOverlaps(availableTimes, availableTimesOptionals, duration, optionalAttendees.size());
 
-    // Calculate best times for optional attendees
-    availableTimesOptionals = getAvailableTimes(optionalAttendees, events, duration);
-
-    // If there is no required attendees, return time which works for optionals
-    if (attendees.isEmpty()) {
-      return availableTimesOptionals;
-    }
-
-    // Find times that works both for required and optional attendees
-    Collection<TimeRange> availableTimesBothAttendees =
-        intersection(availableTimesOptionals, availableTimes, duration);
-
-    // Return time if any which works for both required and optional attendees
-    if (!availableTimesBothAttendees.isEmpty()) {
-      return availableTimesBothAttendees;
-    }
-
-    return availableTimes;
+    return overlaps;
   }
 
-  /** Finds avaliable times for the given atteendee list, input collection and event duration */
+  /**
+   * Finds avaliable times considering the required atteendee list, existing events and event
+   * duration
+   */
   private Collection<TimeRange> getAvailableTimes(
       Collection<String> attendees, Collection<Event> events, int duration) {
-    // TODO: Make this method more optimal
-    Collection<TimeRange> availableTimes = new ArrayList<>();
+    List<TimeRange> busyTimes = new ArrayList<>();
+    Collection<TimeRange> freeTimes;
 
-    // possible start and end times of the event
-    int start = 0;
-    int end = start + duration;
+    // finds time ranges that do not work for at least one required attendee
+    for (Event event : events) {
+      TimeRange eventTimeRange = event.getWhen();
 
-    // start and end time of the free period when event can occur
-    int availablePeriodStart = -1;
-    int availablePeriodEnd = -1;
+      Collection<String> eventAttendees = event.getAttendees();
+      if (!Collections.disjoint(attendees, eventAttendees)) {
+        busyTimes.add(eventTimeRange);
+      }
+    }
 
-    // Consider every possible time period and see if it works for attendees
-    while (end <= TimeRange.END_OF_DAY) {
-      TimeRange currentTimeRange = TimeRange.fromStartDuration(start, duration);
-      boolean works = true;
+    freeTimes = findFreeTimesFromBusy(busyTimes, duration);
 
-      // Comparing possible time range to the events to see if there is any overlaps
-      for (Event event : events) {
-        TimeRange eventTimeRange = event.getWhen();
-        if (currentTimeRange.overlaps(eventTimeRange)) {
-          Collection<String> eventAttendees = event.getAttendees();
-          if (!Collections.disjoint(attendees, eventAttendees)) {
-            works = false;
+    return freeTimes;
+  }
+
+  /**
+   * Calculates for each minute in a day how many optional attendee are free. Returns list X of size
+   * 1440, where X[i] is how many optional attendees are free on minute i
+   */
+  private List<Integer> getAvailableTimesForOptionals(
+      Collection<String> optionalAttendees, Collection<Event> events, int duration) {
+    Map<TimeRange, Set<String>> busyTimesForOptionals = new HashMap<>();
+
+    // for each event, finds which optional attendees are busy
+    for (Event event : events) {
+      TimeRange eventTimeRange = event.getWhen();
+
+      Collection<String> eventAttendees = event.getAttendees();
+      Set<String> busyOptionals = new HashSet<>(optionalAttendees);
+      busyOptionals.retainAll(eventAttendees);
+
+      if (busyOptionals.size() > 0) {
+        if (busyTimesForOptionals.containsKey(eventTimeRange)) {
+          busyTimesForOptionals.get(eventTimeRange).addAll(busyOptionals);
+        } else {
+          busyTimesForOptionals.put(eventTimeRange, busyOptionals);
+        }
+      }
+    }
+
+    List<Set<String>> setOfBusyOptionalsEachMinute = new ArrayList<>();
+    for (int i = 0; i <= TimeRange.END_OF_DAY; i++) {
+      setOfBusyOptionalsEachMinute.add(new HashSet<>());
+    }
+
+    // find busy people set for every minute and merge sets if there are overlaping time ranges
+    for (TimeRange timeRange : busyTimesForOptionals.keySet()) {
+      for (int i = timeRange.start(); i < timeRange.end(); i++) {
+        setOfBusyOptionalsEachMinute.get(i).addAll(busyTimesForOptionals.get(timeRange));
+      }
+    }
+
+    List<Integer> numberOfFreeOptionals = new ArrayList<>();
+    int totalOptionals = optionalAttendees.size();
+
+    for (int i = 0; i <= TimeRange.END_OF_DAY; i++) {
+      numberOfFreeOptionals.add(totalOptionals - setOfBusyOptionalsEachMinute.get(i).size());
+    }
+
+    return numberOfFreeOptionals;
+  }
+
+  /**
+   * Calculates for each number of optional attendees, which free time ranges are overlaping with
+   * available times for required attendees and returns overlaping free times with highest number
+   * possible
+   */
+  private Collection<TimeRange> findOverlaps(
+      Collection<TimeRange> availableTimes,
+      List<Integer> numberOfOptionals,
+      int duration,
+      int maxOptionals) {
+
+    List<List<TimeRange>> overlaps = new ArrayList<>();
+
+    for (int i = 1; i <= maxOptionals + 1; i++) {
+      overlaps.add(new ArrayList<TimeRange>());
+    }
+
+    // for each available time for required attendees find chuncks of times with same number of free
+    // optionals and populates overlaps
+    for (TimeRange availableTime : availableTimes) {
+      int start = availableTime.start();
+      int end = availableTime.end();
+
+      if (end > TimeRange.END_OF_DAY) {
+        end = TimeRange.END_OF_DAY;
+      }
+      int optionalsNum = numberOfOptionals.get(start);
+
+      // for time range which has same number of free optionals
+      int localStart = start;
+      int localEnd = start;
+
+      for (int i = start; i <= end; i++) {
+        if (numberOfOptionals.get(i) != optionalsNum || i == end) {
+          TimeRange time;
+
+          if (i == TimeRange.END_OF_DAY) {
+            time = TimeRange.fromStartEnd(localStart, localEnd, true);
+          } else {
+            time = TimeRange.fromStartEnd(localStart, localEnd, false);
           }
+
+          if (localEnd - localStart >= duration) {
+            overlaps.get(optionalsNum).add(time);
+          }
+
+          optionalsNum = numberOfOptionals.get(i);
+          localStart = i;
         }
 
-        if (!works) break;
+        localEnd++;
       }
+    }
 
-      if (works) {
-        // If last time period did not work, update start time
-        if (availablePeriodEnd == -1) {
-          availablePeriodStart = start;
-        }
-        // And extend end time
-        availablePeriodEnd = end;
-
-        // If this is last possible complete time period
-        if (end == TimeRange.END_OF_DAY) {
-          availableTimes.add(
-              TimeRange.fromStartEnd(availablePeriodStart, availablePeriodEnd, true));
-        }
-      } else {
-
-        // If last time period was valid
-        if (availablePeriodEnd != -1) {
-          availableTimes.add(
-              TimeRange.fromStartEnd(availablePeriodStart, availablePeriodEnd, false));
-        }
-
-        // Mark that this time period did not work
-        availablePeriodStart = -1;
-        availablePeriodEnd = -1;
+    for (int i = maxOptionals; i > 0; i--) {
+      if (!overlaps.get(i).isEmpty()) {
+        return overlaps.get(i);
       }
-
-      start++;
-      end++;
     }
 
     return availableTimes;
   }
 
-  /** Finds intersection between elements of two lists of TimeRange and returns as a list */
-  private List<TimeRange> intersection(
-      Collection<TimeRange> list1, Collection<TimeRange> list2, int duration) {
-    List<TimeRange> intersection = new ArrayList<>();
+  /* Find the free time period of at least event length using busy time ranges */
+  private Collection<TimeRange> findFreeTimesFromBusy(List<TimeRange> busyTimes, int duration) {
+    Collections.sort(busyTimes, TimeRange.ORDER_BY_START);
 
-    for (TimeRange el1 : list1) {
-      for (TimeRange el2 : list2) {
-        int overlapStart = Math.max(el1.start(), el2.start());
-        int overlapEnd = Math.min(el1.end(), el2.end());
-        if (overlapEnd - overlapStart >= duration) {
-          intersection.add(TimeRange.fromStartEnd(overlapStart, overlapEnd, false));
+    int start = TimeRange.START_OF_DAY;
+    List<TimeRange> availableTimes = new ArrayList<TimeRange>();
+
+    for (TimeRange timeRange : busyTimes) {
+      int timeRangeStart = timeRange.start();
+      int timeRangeEnd = timeRange.end();
+
+      // free time: |--------------|
+      // busy time:    |------|
+      if (timeRangeStart > start) {
+        if (timeRangeStart - start >= duration) {
+          availableTimes.add(TimeRange.fromStartEnd(start, timeRangeStart, false));
         }
+        start = timeRangeEnd;
+      } else
+      // free time:    |---------|
+      // busy time: |------|
+      if (timeRangeEnd > start) {
+        start = timeRangeEnd;
       }
     }
 
-    return intersection;
+    if (TimeRange.END_OF_DAY - start >= duration) {
+      availableTimes.add(TimeRange.fromStartEnd(start, TimeRange.END_OF_DAY, true));
+    }
+
+    return availableTimes;
   }
 }
